@@ -21,6 +21,5 @@ This is a static site. `index.html`, `style.css`, and `app.js` are published by 
 ## Project files
 
 - `index.html`, `style.css`, and `app.js`: quotation editor
-- `index.html`, `style.css`, and `app.js`: published quotation editor
 - `.github/workflows/pages.yml`: deploys the static editor to GitHub Pages when `main` changes
 
