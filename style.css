@@ -105,6 +105,7 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
+  margin-left: auto;
 }
 
 .btn {
@@ -238,9 +239,14 @@ body {
 .text-placement-banner { display:flex; align-items:center; justify-content:space-between; gap:12px; max-width:850px; margin:0 auto 18px; padding:11px 14px; border:1px solid var(--tmpl-border-accent); border-radius:8px; background:var(--ui-surface); color:var(--ui-text); font-size:12px; }
 .text-placement-banner[hidden] { display:none; }
 .placing-text #document-canvas .page { cursor:crosshair; }
-.free-text-field { position:absolute; z-index:30; min-width:130px; min-height:40px; padding:8px 10px; border:1px dashed transparent; line-height:1.35; overflow:visible; touch-action:auto; }
+.free-text-field { position:absolute; z-index:30; min-width:0; min-height:40px; padding:8px 10px; border:1px dashed transparent; line-height:1.35; overflow:visible; touch-action:auto; }
 .free-text-field:hover,.free-text-field.is-selected { border-color:var(--tmpl-primary); background:color-mix(in srgb,var(--tmpl-card-bg) 72%,transparent); }
-.free-text-content { min-height:24px; outline:none; overflow-wrap:anywhere; white-space:pre-wrap; cursor:text; }
+.free-text-content { min-height:24px; outline:none; overflow-wrap:anywhere; word-break:normal; white-space:pre-wrap; cursor:text; }
+.free-text-resize-handle { position:absolute; right:-5px; bottom:-5px; width:19px; height:19px; border:2px solid #fff; border-radius:5px; background:var(--tmpl-primary); box-shadow:0 1px 5px #0005; cursor:nwse-resize; touch-action:none; z-index:2; }
+.free-text-resize-handle::before { content:""; position:absolute; inset:4px; border-right:2px solid #fff; border-bottom:2px solid #fff; }
+.free-text-field:not(.is-selected) .free-text-resize-handle { display:none; }
+.free-text-field.is-being-resized { outline:2px solid var(--tmpl-primary); outline-offset:3px; }
+.resizing-text-field { cursor:nwse-resize; }
 
 /* Twenty-six template layouts carry their own composition and card language. */
 html[data-layout="signature"] .page-cover .cover-image-container { height:62%; }
@@ -1463,9 +1469,8 @@ html[data-layout="modern-chapel"] .timeline-card, html[data-layout="modern-chape
   .brand-logo-icon { width:30px; height:30px; }
   .brand-text h1 { font-size:13px; }
   .brand-text span { font-size:9px; }
-  .nav-actions { width:100%; display:grid; grid-template-columns:1fr 1fr; gap:7px; }
-  .nav-actions .btn { min-height:42px; justify-content:center; padding:8px; font-size:11px; }
-  .nav-actions .btn-primary { grid-column:span 2; }
+  .nav-actions { width:auto; display:flex; margin-left:auto; }
+  .nav-actions .btn { min-height:40px; justify-content:center; padding:8px 10px; font-size:11px; }
   .template-strip { padding:8px 12px; gap:8px; }
   .template-strip-label { position:sticky; left:0; z-index:2; padding:8px 3px; background:#181C20; font-size:9px; }
   .tmpl-chip { padding:7px 10px; font-size:11px; }
@@ -1520,7 +1525,6 @@ html[data-layout="modern-chapel"] .timeline-card, html[data-layout="modern-chape
   .modal-container { width:calc(100vw - 20px); max-width:none; max-height:92svh; }
   .modal-body { padding:15px; max-height:calc(92svh - 60px); }
   .text-placement-banner { position:sticky; top:0; z-index:10; }
-  .free-text-field { min-width:95px; }
   .free-text-field { min-width:0; }
   html[data-layout="terracotta"] .page-cover, html[data-layout="terracotta"] .page-thankyou,
   html[data-layout="coastal-ceremony"] .page-cover, html[data-layout="coastal-ceremony"] .page-thankyou { flex-direction:column; }
@@ -1588,6 +1592,7 @@ html[data-layout="modern-chapel"] .timeline-card, html[data-layout="modern-chape
     page-break-after: avoid !important;
     break-after: avoid !important;
   }
+  .free-text-resize-handle { display:none !important; }
   .inline-editing [contenteditable="true"] {
     outline: none !important;
     background: transparent !important;
@@ -1606,6 +1611,15 @@ html[data-layout="modern-chapel"] .timeline-card, html[data-layout="modern-chape
   .app-sidebar { height:auto; max-height:44svh; }
   .app-canvas-container { height:auto; }
   .selected-element-tools .btn { min-height:40px; }
+}
+@media (max-width: 540px) {
+  .app-navbar { align-items:center; padding:7px 9px; }
+  .brand-wrapper { min-width:0; }
+  .brand-text h1 { font-size:11px; }
+  .brand-text span { font-size:8px; }
+  .brand-logo-icon { width:27px; height:27px; }
+  .nav-actions .btn { min-height:38px; padding:7px 8px; font-size:10px; white-space:nowrap; }
+  .nav-actions .btn svg { width:13px; height:13px; }
 }
 .toolbox-title { position:sticky; top:0; z-index:5; background:var(--ui-surface); }
 body.arranging-elements #document-canvas .design-selectable {
@@ -1660,5 +1674,6 @@ body.moving-design-element #document-canvas .design-selectable.is-being-dragged 
   body.arranging-elements #document-canvas .design-selectable,
   .free-text-field.is-selected { outline:none !important; }
   .dragging-indicator { display:none !important; }
+  .free-text-field { border:0 !important; background:transparent !important; }
+  .free-text-resize-handle { display:none !important; }
 }
-

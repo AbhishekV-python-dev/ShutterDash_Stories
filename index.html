@@ -25,7 +25,12 @@
         <span>Quotation Editor</span>
       </div>
     </div>
-
+    <div class="nav-actions">
+      <button class="btn btn-primary" id="btn-print-pdf" onclick="printOrDownloadPDF()" title="Download or print your quotation as PDF">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        <span>Download / Print PDF</span>
+      </button>
+    </div>
   </header>
 
   <!-- =========================================================================
@@ -165,7 +170,6 @@
           <div class="panel-card-title">Editor actions</div>
           <button class="btn btn-secondary tool-wide" id="btn-inline-edit" onclick="toggleInlineEditing()"><span id="edit-btn-label">Enable Click-To-Edit</span></button>
           <div class="zoom-tools"><button class="btn btn-secondary" onclick="adjustZoom(-0.1)" aria-label="Zoom out">−</button><span id="zoom-level">100%</span><button class="btn btn-secondary" onclick="adjustZoom(0.1)" aria-label="Zoom in">＋</button><button class="btn btn-secondary" onclick="resetZoom()">Reset view</button></div>
-          <button class="btn btn-primary tool-wide" onclick="printOrDownloadPDF()">Download / Print PDF</button>
         </div>
       </div>
     </aside>
@@ -276,4 +280,3 @@
   <script src="app.js"></script>
 </body>
 </html>
-

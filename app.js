@@ -149,6 +149,7 @@ const AppState = {
   addingTextField: false,
   arrangingElements: false,
   draggingElement: null,
+  resizingTextField: null,
   selectedElementKey: null,
   activeTextFieldId: null,
   undoHistory: [],
@@ -569,6 +570,8 @@ function renderPositionedTextFields() {
       box.dataset.textFieldId = field.id;
       box.style.left = `${field.x}%`; box.style.top = `${field.y}%`;
       box.style.width = `${field.width || 32}%`;
+      box.style.maxWidth = `${Math.max(6, 100 - field.x)}%`;
+      if (field.height) box.style.minHeight = `${field.height}%`;
       box.style.fontSize = `${field.fontSize || 20}px`;
       const activeTheme = TEMPLATES.find(t => t.id === AppState.currentTemplateId)?.theme;
       box.style.fontFamily = field.fontStyle === 'heading' ? activeTheme?.fontHeading : activeTheme?.fontBody;
@@ -580,6 +583,14 @@ function renderPositionedTextFields() {
       text.className = 'free-text-content'; text.contentEditable = 'true'; text.setAttribute('role', 'textbox');
       text.setAttribute('aria-label', 'Custom proposal text'); text.textContent = field.text || '';
       box.append(text); page.appendChild(box);
+      if (field.id === AppState.activeTextFieldId) {
+        const resizeHandle = document.createElement('button');
+        resizeHandle.type = 'button';
+        resizeHandle.className = 'free-text-resize-handle no-print';
+        resizeHandle.setAttribute('aria-label', 'Resize text box');
+        resizeHandle.title = 'Drag to resize this text box';
+        box.append(resizeHandle);
+      }
     });
   });
 }
@@ -627,6 +638,25 @@ function updateSelectedElementTools() {
   document.getElementById('selected-text-tools').hidden = !AppState.activeTextFieldId;
   const textField = AppState.data.positionedTextFields.find(field => field.id === AppState.activeTextFieldId);
   if (textField) document.getElementById('selected-text-color').value = /^#[0-9a-f]{6}$/i.test(textField.color) ? textField.color : '#333333';
+}
+
+function setActiveTextField(id, box) {
+  AppState.activeTextFieldId = id || null;
+  if (box?.dataset.designKey) AppState.selectedElementKey = box.dataset.designKey;
+  document.querySelectorAll('#document-canvas .free-text-field').forEach(fieldBox => {
+    const selected = fieldBox.dataset.textFieldId === AppState.activeTextFieldId;
+    fieldBox.classList.toggle('is-selected', selected);
+    let handle = fieldBox.querySelector('.free-text-resize-handle');
+    if (selected && !handle) {
+      handle = document.createElement('button');
+      handle.type = 'button';
+      handle.className = 'free-text-resize-handle no-print';
+      handle.setAttribute('aria-label', 'Resize text box');
+      handle.title = 'Drag to resize this text box';
+      fieldBox.append(handle);
+    } else if (!selected && handle) handle.remove();
+  });
+  updateSelectedElementTools();
 }
 
 function toggleArrangeElements(force) {
@@ -701,7 +731,7 @@ function adjustSelectedText(property, value) {
   if (!field) return;
   recordUndo('Format custom text');
   if (property === 'fontSize') field.fontSize = Math.max(10, Math.min(60, (field.fontSize || 20) + value));
-  if (property === 'width') field.width = Math.max(12, Math.min(96, (field.width || 32) + value));
+  if (property === 'width') field.width = Math.max(12, Math.min(Math.max(12, 100 - field.x), (field.width || 32) + value));
   if (property === 'color') field.color = value;
   if (property === 'align') field.align = field.align === 'left' ? 'center' : field.align === 'center' ? 'right' : 'left';
   if (property === 'bold') field.bold = !field.bold;
@@ -715,9 +745,29 @@ function deleteSelectedText() {
   AppState.activeTextFieldId = null; renderPages();
 }
 
+function finishTextResize() {
+  const resize = AppState.resizingTextField;
+  if (!resize) return;
+  resize.node.classList.remove('is-being-resized');
+  document.body.classList.remove('resizing-text-field');
+  const indicator = document.getElementById('dragging-indicator');
+  if (indicator) indicator.hidden = true;
+  if (resize.moved) persistProject();
+  AppState.resizingTextField = null;
+}
+
 function toggleTextPlacement(force) {
   AppState.addingTextField = typeof force === 'boolean' ? force : !AppState.addingTextField;
-  if (AppState.addingTextField) toggleArrangeElements(false);
+  if (AppState.addingTextField && AppState.arrangingElements) {
+    finishDesignDrag();
+    AppState.arrangingElements = false;
+    AppState.selectedElementKey = null;
+    document.body.classList.remove('arranging-elements');
+    const arrangeButton = document.getElementById('btn-arrange-elements');
+    arrangeButton?.classList.remove('btn-active');
+    arrangeButton?.setAttribute('aria-pressed', 'false');
+    applyDesignElementPositions();
+  }
   const banner = document.getElementById('text-placement-banner');
   const button = document.getElementById('btn-add-text');
   banner.hidden = !AppState.addingTextField;
@@ -727,7 +777,7 @@ function toggleTextPlacement(force) {
 }
 
 function addPositionedTextField(page, x, y) {
-  const field = { id: globalThis.crypto?.randomUUID?.() || `text-${Date.now()}`, pageKey: page.dataset.pageKey, x, y, width:32, fontSize:20, fontStyle:'body', color:getComputedStyle(document.documentElement).getPropertyValue('--tmpl-heading').trim(), align:'left', bold:false, text:'Type your text here' };
+  const field = { id: globalThis.crypto?.randomUUID?.() || `text-${Date.now()}`, pageKey: page.dataset.pageKey, x, y, width:32, height:0, fontSize:20, fontStyle:'body', color:getComputedStyle(document.documentElement).getPropertyValue('--tmpl-heading').trim(), align:'left', bold:false, text:'Type your text here' };
   recordUndo('Add text field');
   AppState.data.positionedTextFields ||= [];
   AppState.data.positionedTextFields.push(field);
@@ -1419,22 +1469,23 @@ function setupEventListeners() {
       addPositionedTextField(page, Math.max(2, Math.min(68, ((event.clientX - bounds.left) / bounds.width) * 100)), Math.max(5, Math.min(90, ((event.clientY - bounds.top) / bounds.height) * 100)));
       return;
     }
+    if (event.target.closest('.free-text-resize-handle')) {
+      event.preventDefault(); event.stopImmediatePropagation();
+      return;
+    }
     if (AppState.arrangingElements) {
       const selected = event.target.closest('[data-design-key]');
       if (!selected) return;
       event.preventDefault(); event.stopImmediatePropagation();
       AppState.selectedElementKey = selected.dataset.designKey;
       const field = selected.closest('.free-text-field');
-      AppState.activeTextFieldId = field?.dataset.textFieldId || null;
       canvas.querySelectorAll('.design-selectable').forEach(node => node.classList.toggle('design-selected', node === selected));
-      updateSelectedElementTools();
+      setActiveTextField(field?.dataset.textFieldId || null, field);
       return;
     }
     const box = event.target.closest('.free-text-field');
     if (box) {
-      AppState.activeTextFieldId = box.dataset.textFieldId;
-      AppState.selectedElementKey = box.dataset.designKey;
-      updateSelectedElementTools();
+      setActiveTextField(box.dataset.textFieldId, box);
     }
   }, true);
   canvas.addEventListener('input', event => {
@@ -1453,21 +1504,63 @@ function setupEventListeners() {
     if (path) updateStateText(path, event.target.innerText);
   });
   canvas.addEventListener('pointerdown', event => {
+    const resizeHandle = event.target.closest('.free-text-resize-handle');
+    if (resizeHandle) {
+      const box = resizeHandle.closest('.free-text-field');
+      const page = box?.closest('.page');
+      const field = AppState.data.positionedTextFields.find(item => item.id === box?.dataset.textFieldId);
+      if (!box || !page || !field) return;
+      event.preventDefault(); event.stopPropagation();
+      setActiveTextField(field.id, box);
+      const pageBounds = page.getBoundingClientRect();
+      const boxHeight = box.getBoundingClientRect().height;
+      AppState.resizingTextField = {
+        id:field.id, field, node:box, page, startX:event.clientX, startY:event.clientY,
+        width:field.width || 32,
+        height:field.height || (boxHeight / pageBounds.height * 100),
+        pageWidth:pageBounds.width, pageHeight:pageBounds.height, moved:false, recorded:false
+      };
+      box.classList.add('is-being-resized');
+      document.body.classList.add('resizing-text-field');
+      const indicator = document.getElementById('dragging-indicator');
+      document.getElementById('dragging-indicator-label').textContent = 'Resizing text box';
+      indicator.hidden = false;
+      try { resizeHandle.setPointerCapture(event.pointerId); } catch (_) { /* Pointer capture may be unavailable on older mobile browsers. */ }
+      return;
+    }
     if (!AppState.arrangingElements) return;
     const node = event.target.closest('[data-design-key]');
     const page = node?.closest('.page');
     if (!node || !page) return;
     AppState.selectedElementKey = node.dataset.designKey;
     const field = node.closest('.free-text-field');
-    AppState.activeTextFieldId = field?.dataset.textFieldId || null;
+    setActiveTextField(field?.dataset.textFieldId || null, field);
     canvas.querySelectorAll('.design-selectable').forEach(item => item.classList.toggle('design-selected', item === node));
     const position = AppState.data.elementPositions[node.dataset.designKey] || {};
     event.preventDefault();
     try { node.setPointerCapture(event.pointerId); } catch (_) { /* The element may have been replaced during a fast render. */ }
     AppState.draggingElement = { key:node.dataset.designKey, node, page, startX:event.clientX, startY:event.clientY, x:position.x || 0, y:position.y || 0, moved:false };
-    updateSelectedElementTools();
   });
   canvas.addEventListener('pointermove', event => {
+    const resize = AppState.resizingTextField;
+    if (resize) {
+      const dx = (event.clientX - resize.startX) / resize.pageWidth * 100;
+      const dy = (event.clientY - resize.startY) / resize.pageHeight * 100;
+      if (!resize.moved && Math.hypot(dx, dy) < .5) return;
+      if (!resize.recorded) {
+        recordUndo('Resize text box', `resize-text:${resize.id}`);
+        resize.recorded = true;
+      }
+      resize.moved = true;
+      const maxWidth = Math.max(6, 100 - resize.field.x);
+      const maxHeight = Math.max(4, 100 - resize.field.y);
+      resize.field.width = Math.max(6, Math.min(maxWidth, resize.width + dx));
+      resize.field.height = Math.max(4, Math.min(maxHeight, resize.height + dy));
+      resize.node.style.width = `${resize.field.width}%`;
+      resize.node.style.maxWidth = `${maxWidth}%`;
+      resize.node.style.minHeight = `${resize.field.height}%`;
+      return;
+    }
     const drag = AppState.draggingElement;
     if (!drag) return;
     const deltaX = event.clientX - drag.startX;
@@ -1492,12 +1585,28 @@ function setupEventListeners() {
   });
   canvas.addEventListener('pointerup', finishDesignDrag);
   canvas.addEventListener('pointercancel', finishDesignDrag);
+  window.addEventListener('pointerup', finishTextResize);
+  window.addEventListener('pointercancel', finishTextResize);
   window.addEventListener('resize', () => applyDesignElementPositions());
   document.addEventListener('keydown', event => {
+    const resizeHandle = event.target.closest?.('.free-text-resize-handle');
+    if (resizeHandle && ['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key)) {
+      const field = AppState.data.positionedTextFields.find(item => item.id === AppState.activeTextFieldId);
+      if (field) {
+        event.preventDefault();
+        recordUndo('Resize text box');
+        const horizontal = event.key === 'ArrowRight' ? 2 : event.key === 'ArrowLeft' ? -2 : 0;
+        const vertical = event.key === 'ArrowDown' ? 2 : event.key === 'ArrowUp' ? -2 : 0;
+        field.width = Math.max(12, Math.min(Math.max(12, 100 - field.x), (field.width || 32) + horizontal));
+        if (vertical) field.height = Math.max(4, Math.min(Math.max(4, 100 - field.y), (field.height || 7) + vertical));
+        renderPages();
+      }
+      return;
+    }
     if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'z' && !event.shiftKey && !event.target.closest('input,textarea,[contenteditable="true"]')) {
       event.preventDefault(); undoLastChange();
     }
-    if (event.key === 'Escape' && AppState.arrangingElements) toggleArrangeElements(false);
+    if (event.key === 'Escape' && AppState.addingTextField) toggleTextPlacement(false);
+    else if (event.key === 'Escape' && AppState.arrangingElements) toggleArrangeElements(false);
   });
 }
-
