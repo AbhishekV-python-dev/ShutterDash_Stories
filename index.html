@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShutterDash Stories Quotation Editor</title>
+  <link rel="stylesheet" href="style.css">
+  <meta name="theme-color" content="#14171A">
+  <meta name="description" content="Create and personalize beautiful ShutterDash Stories wedding quotations.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%23AD8A56'/><text x='50' y='72' text-anchor='middle' font-size='68' fill='white' font-family='Georgia'>S</text></svg>">
+</head>
+<body>
+
+  <!-- =========================================================================
+       TOP NAVBAR
+       ========================================================================= -->
+  <header class="app-navbar no-print">
+    <div class="brand-wrapper">
+      <button class="btn btn-secondary icon-btn" id="sidebar-toggle" title="Hide editing tools" aria-label="Hide editing tools" aria-controls="app-sidebar" aria-expanded="true" onclick="toggleSidebar()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <div class="brand-logo-icon">S</div>
+      <div class="brand-text">
+        <h1>ShutterDash Stories</h1>
+        <span>Quotation Editor</span>
+      </div>
+    </div>
+
+  </header>
+
+  <!-- =========================================================================
+       MAIN WORKSPACE (CUSTOMIZER SIDEBAR + DOCUMENT CANVAS)
+       ========================================================================= -->
+  <div class="app-workspace">
+
+    <!-- CUSTOMIZER SIDEBAR -->
+    <aside class="app-sidebar no-print" id="app-sidebar">
+      <div class="toolbox-title"><span>EDITOR TOOLBOX</span><small>All design and content controls</small></div>
+
+      <!-- STYLE & COLOR PALETTE -->
+      <div class="sidebar-content sidebar-tab-pane" id="tab-pane-style">
+        <div class="panel-card template-picker-panel">
+          <div class="panel-card-title">Choose a design</div>
+          <div class="template-strip no-print">
+            <div id="template-chips" class="template-chip-grid"></div>
+          </div>
+        </div>
+        <div class="panel-card">
+          <div class="panel-card-title">Color Palette</div>
+          
+          <div class="color-picker-row">
+            <label>Primary Brand Color</label>
+            <div class="color-input-wrapper">
+              <input type="color" class="color-picker" id="picker-primary" onchange="updateCustomColor('--tmpl-primary', this.value)">
+            </div>
+          </div>
+          <div class="form-group"><label>Heading typeface</label><select class="form-control" id="font-heading" onchange="updateCustomFont('heading',this.value)"><option value="'Cormorant Garamond', Georgia, serif">Cormorant Garamond</option><option value="'Playfair Display', Georgia, serif">Playfair Display</option><option value="'DM Serif Display', Georgia, serif">DM Serif Display</option><option value="'Space Grotesk', sans-serif">Space Grotesk</option><option value="'Cinzel', Georgia, serif">Cinzel</option><option value="'Bodoni Moda', Georgia, serif">Bodoni Moda</option><option value="'Lora', Georgia, serif">Lora</option><option value="'Prata', Georgia, serif">Prata</option></select></div>
+          <div class="form-group"><label>Body typeface</label><select class="form-control" id="font-body" onchange="updateCustomFont('body',this.value)"><option value="'Montserrat', sans-serif">Montserrat</option><option value="'Inter', sans-serif">Inter</option><option value="'Plus Jakarta Sans', sans-serif">Plus Jakarta Sans</option><option value="'Jost', sans-serif">Jost</option><option value="'Outfit', sans-serif">Outfit</option><option value="'Lora', Georgia, serif">Lora</option></select></div>
+
+          <div class="color-picker-row">
+            <label>Accent & Badges</label>
+            <div class="color-input-wrapper">
+              <input type="color" class="color-picker" id="picker-accent" onchange="updateCustomColor('--tmpl-accent', this.value)">
+            </div>
+          </div>
+
+          <div class="color-picker-row">
+            <label>Page Background</label>
+            <div class="color-input-wrapper">
+              <input type="color" class="color-picker" id="picker-bg" onchange="updateCustomColor('--tmpl-bg', this.value)">
+            </div>
+          </div>
+
+          <div class="color-picker-row">
+            <label>Card Background</label>
+            <div class="color-input-wrapper">
+              <input type="color" class="color-picker" id="picker-card" onchange="updateCustomColor('--tmpl-card-bg', this.value)">
+            </div>
+          </div>
+
+          <div class="color-picker-row">
+            <label>Body Text</label>
+            <div class="color-input-wrapper">
+              <input type="color" class="color-picker" id="picker-text" onchange="updateCustomColor('--tmpl-text', this.value)">
+            </div>
+          </div>
+        </div>
+
+        <div class="panel-card">
+          <div class="panel-card-title">Photos & Visuals</div>
+          <p style="font-size: 12px; color: var(--ui-text-muted); line-height: 1.5;">
+            Click on any photo directly in the proposal pages to replace it with presets, upload your own, or use a custom image URL.
+          </p>
+        </div>
+      </div>
+
+      <!-- SECTIONS & LAYOUT TOOLS -->
+      <div class="sidebar-content sidebar-tab-pane" id="tab-pane-sections">
+        <div class="panel-card">
+          <div class="panel-card-title">Move & add elements</div>
+          <button class="btn btn-secondary tool-wide" id="btn-undo" onclick="undoLastChange()" title="Undo the latest edit (Ctrl/Cmd+Z)" disabled>↶ Undo last change</button>
+          <button class="btn btn-secondary tool-wide" id="btn-arrange-elements" onclick="toggleArrangeElements()" aria-pressed="false">↔ Move or resize any element</button>
+          <div class="selected-element-tools" id="selected-element-tools" hidden><span id="selected-element-label">Tap an item on the page, then drag it.</span><div><button class="btn btn-secondary" onclick="adjustSelectedElement(-1)" aria-label="Shrink selected element">− Size</button><button class="btn btn-secondary" onclick="adjustSelectedElement(1)" aria-label="Enlarge selected element">＋ Size</button><button class="btn btn-secondary" onclick="adjustSelectedLayer(-1)" aria-label="Send selected element backward">↓ Layer</button><button class="btn btn-secondary" onclick="adjustSelectedLayer(1)" aria-label="Bring selected element forward">↑ Layer</button><button class="btn btn-secondary" onclick="resetSelectedElement()">Reset position & size</button><button class="btn btn-danger" onclick="deleteSelectedElement()">Delete element</button></div></div>
+          <button class="btn btn-primary tool-wide" id="btn-add-text" onclick="toggleTextPlacement()" aria-pressed="false">＋ Add text anywhere</button>
+          <div class="text-placement-banner" id="text-placement-banner" hidden><span>Tap any page to place your text.</span><button class="btn btn-secondary" onclick="toggleTextPlacement(false)">Cancel</button></div>
+          <div class="selected-element-tools" id="selected-text-tools" hidden><strong>Selected text field</strong><div class="text-format-grid"><button class="btn btn-secondary" onclick="adjustSelectedText('fontSize',-2)">A−</button><button class="btn btn-secondary" onclick="adjustSelectedText('fontSize',2)">A+</button><button class="btn btn-secondary" onclick="adjustSelectedText('width',-4)">Narrow</button><button class="btn btn-secondary" onclick="adjustSelectedText('width',4)">Widen</button><button class="btn btn-secondary" onclick="adjustSelectedText('align')">Align</button><button class="btn btn-secondary" onclick="adjustSelectedText('bold')"><b>Bold</b></button><button class="btn btn-secondary" onclick="adjustSelectedText('fontStyle')">Aa</button><label>Color <input class="tool-color" id="selected-text-color" type="color" onchange="adjustSelectedText('color',this.value)"></label><button class="btn btn-secondary" onclick="deleteSelectedText()">Delete</button></div></div>
+          <div class="panel-card-title">Add a matching item</div>
+          <div class="repeat-item-grid"><button class="btn btn-secondary" onclick="addSectionItem('timeline')">＋ Timeline event</button><button class="btn btn-secondary" onclick="addSectionItem('coverage')">＋ Coverage card</button><button class="btn btn-secondary" onclick="addSectionItem('deliverables')">＋ Deliverable</button><button class="btn btn-secondary" onclick="addSectionItem('gifts')">＋ Gift</button><button class="btn btn-secondary" onclick="addSectionItem('milestone')">＋ Payment step</button><button class="btn btn-secondary" onclick="addSectionItem('faq')">＋ FAQ</button><button class="btn btn-secondary" onclick="addSectionItem('testimonial')">＋ Testimonial</button></div>
+        </div>
+        <div class="panel-card">
+          <div class="panel-card-title">
+            <span>Manage Sections</span>
+            <button class="btn btn-primary" style="padding: 4px 10px; font-size: 11px;" onclick="openAddSectionModal()">+ Add Section</button>
+          </div>
+          <p style="font-size: 11.5px; color: var(--ui-text-muted); margin-bottom: 8px;">
+            Reorder pages with ▲/▼ or remove any section. Added sections automatically inherit the active template styling!
+          </p>
+          <div id="section-manager-list" style="display: flex; flex-direction: column; gap: 8px;">
+            <!-- Generated dynamically -->
+          </div>
+        </div>
+      </div>
+
+      <!-- BRAND, PRICING, AND EDITOR ACTIONS -->
+      <div class="sidebar-content sidebar-tab-pane" id="tab-pane-details">
+        <div class="panel-card">
+          <div class="panel-card-title">Brand & Contact</div>
+          <div class="form-group"><label>Client / Couple</label><input type="text" class="form-control" id="detail-client" placeholder="e.g. Aarav & Maya" oninput="updateStateText('brand.client', this.value); renderPages();"></div>
+          <div class="form-group"><label>Proposal Date / Event Date</label><input type="text" class="form-control" id="detail-event-date" placeholder="e.g. 24 October 2026" oninput="updateStateText('brand.eventDate', this.value); renderPages();"></div>
+          <div class="form-group"><label>Email</label><input type="email" class="form-control" id="detail-email" placeholder="hello@example.com" oninput="updateStateText('brand.email', this.value); renderPages();"></div>
+          <div class="form-group">
+            <label>Brand Name</label>
+            <input type="text" class="form-control" id="detail-brand-name" value="SHUTTERDASH STORIES" oninput="updateStateText('brand.name', this.value); renderPages();">
+          </div>
+          <div class="form-group">
+            <label>Tagline</label>
+            <input type="text" class="form-control" id="detail-tagline" value="CAPTURING LOVE BEYOND MOMENTS" oninput="updateStateText('brand.tagline', this.value); renderPages();">
+          </div>
+          <div class="form-group">
+            <label>Phone</label>
+            <input type="text" class="form-control" id="detail-phone" value="+91 96335 74917" oninput="updateStateText('brand.phone', this.value); renderPages();">
+          </div>
+          <div class="form-group"><label>WhatsApp</label><input type="text" class="form-control" id="detail-whatsapp" placeholder="WhatsApp number" oninput="updateStateText('brand.whatsapp', this.value); renderPages();"></div>
+          <div class="form-group">
+            <label>Instagram</label>
+            <input type="text" class="form-control" id="detail-insta" value="@shutterdash.stories" oninput="updateStateText('brand.instagram', this.value); renderPages();">
+          </div>
+        </div>
+
+        <div class="panel-card">
+          <div class="panel-card-title">Investment & Pricing</div>
+          <div class="form-group">
+            <label>Package Amount</label>
+            <input type="text" class="form-control" id="detail-amount" value="1,90,000" oninput="updateStateText('investment.amount', this.value); renderPages();">
+          </div>
+          <div class="form-group">
+            <label>Package Label</label>
+            <input type="text" class="form-control" id="detail-package-label" value="COMPLETE PHOTOGRAPHY & VIDEOGRAPHY PACKAGE" oninput="updateStateText('investment.packageLabel', this.value); renderPages();">
+          </div>
+          <div class="form-group"><label>About / Brand Story</label><textarea class="form-control" rows="4" oninput="updateStateText('about.p1', this.value); renderPages();">At ShutterDash Stories, we believe weddings are not simply events—they are timeless stories filled with emotions, traditions, laughter, and unforgettable memories.</textarea></div>
+          <div class="form-group"><label>Closing Message</label><textarea class="form-control" rows="3" oninput="updateStateText('closing.message', this.value); renderPages();">Thank you for considering ShutterDash Stories to capture one of the most precious chapters of your life.</textarea></div>
+        </div>
+        <div class="panel-card">
+          <div class="panel-card-title">Editor actions</div>
+          <button class="btn btn-secondary tool-wide" id="btn-inline-edit" onclick="toggleInlineEditing()"><span id="edit-btn-label">Enable Click-To-Edit</span></button>
+          <div class="zoom-tools"><button class="btn btn-secondary" onclick="adjustZoom(-0.1)" aria-label="Zoom out">−</button><span id="zoom-level">100%</span><button class="btn btn-secondary" onclick="adjustZoom(0.1)" aria-label="Zoom in">＋</button><button class="btn btn-secondary" onclick="resetZoom()">Reset view</button></div>
+          <button class="btn btn-primary tool-wide" onclick="printOrDownloadPDF()">Download / Print PDF</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- DOCUMENT CANVAS CONTAINER -->
+    <main class="app-canvas-container" id="canvas-container">
+      <div class="dragging-indicator no-print" id="dragging-indicator" role="status" aria-live="polite" hidden><span class="dragging-pulse"></span><span id="dragging-indicator-label">Moving element</span><span class="dragging-hint">Release to place</span></div>
+      <div id="document-canvas" style="display: flex; flex-direction: column; align-items: center; gap: 36px;">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+    </main>
+
+  </div>
+
+  <!-- =========================================================================
+       MODAL: IMAGE PICKER & UPLOADER
+       ========================================================================= -->
+  <div class="modal-overlay no-print" id="modal-image-picker" onclick="if(event.target === this) closeImageModal()">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3>Replace Photo</h3>
+        <button class="icon-btn" onclick="closeImageModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Select From Demo Presets</label>
+          <div class="preset-img-grid" id="preset-image-grid">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Upload From Computer</label>
+          <input type="file" accept="image/*" class="form-control" onchange="handleImageUpload(event)">
+        </div>
+
+        <div class="form-group">
+          <label>Or Paste External Image URL</label>
+          <div style="display: flex; gap: 8px;">
+            <input type="text" class="form-control" id="custom-img-url" placeholder="https://example.com/photo.jpg" style="flex: 1;">
+            <button class="btn btn-primary" onclick="handleCustomImageUrl()">Apply</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MODAL: ADD NEW SECTION
+       ========================================================================= -->
+  <div class="modal-overlay no-print" id="modal-add-section" onclick="if(event.target === this) closeAddSectionModal()">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3>Add Section to Proposal</h3>
+        <button class="icon-btn" onclick="closeAddSectionModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 12px; color: var(--ui-text-muted);">Start with one of the ready-made sections, or build a flexible content page with your own heading, copy, list, photo and callout.</p>
+
+        <div id="custom-section-form-wrap" class="custom-section-form-wrap" hidden>
+          <div class="custom-form-heading"><span>YOUR CONTENT</span><span>Styled to match the selected template</span></div>
+          <div class="form-group"><label>Section heading *</label><input id="custom-section-title" class="form-control" placeholder="e.g. Our approach"></div>
+          <div class="custom-form-grid">
+            <div class="form-group"><label>Eyebrow / small label</label><input id="custom-section-eyebrow" class="form-control" placeholder="OPTIONAL KICKER"></div>
+            <div class="form-group"><label>Subheading</label><input id="custom-section-subtitle" class="form-control" placeholder="A short introduction"></div>
+          </div>
+          <div class="form-group"><label>Details / paragraph</label><textarea id="custom-section-body" class="form-control" rows="4" placeholder="Write any details your proposal needs…"></textarea></div>
+          <div class="form-group"><label>List items <span class="field-hint">one item per line</span></label><textarea id="custom-section-bullets" class="form-control" rows="3" placeholder="First detail&#10;Another detail&#10;One more detail"></textarea></div>
+          <div class="custom-form-grid">
+            <div class="form-group"><label>Highlight / note</label><input id="custom-section-note" class="form-control" placeholder="Optional callout"></div>
+            <div class="form-group"><label>Section photo</label><input id="custom-section-image" class="form-control" placeholder="Paste image URL (optional)"><input type="file" class="form-control custom-image-upload" accept="image/*" aria-label="Upload a section photo" onchange="handleCustomSectionImageUpload(event)"></div>
+          </div>
+          <div class="custom-form-grid custom-form-footer">
+            <div class="form-group"><label>Page composition</label><select id="custom-section-layout" class="form-control"><option value="editorial">Editorial</option><option value="cards">Card collection</option><option value="feature">Feature story</option></select></div>
+            <button id="custom-section-save" class="btn btn-primary" onclick="saveCustomSection()">Add custom section</button>
+          </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <button class="btn btn-primary custom-section-launch" onclick="openCustomSectionForm()">＋ Build a custom content page</button>
+          <div class="ready-made-label">READY-MADE SECTIONS</div>
+          <button class="btn btn-secondary" style="justify-content: flex-start; padding: 12px;" onclick="addSection('timeline')">
+            📅 Coverage Timeline (Schedule / Itinerary)
+          </button>
+          <button class="btn btn-secondary" style="justify-content: flex-start; padding: 12px;" onclick="addSection('coverage')">
+            👥 Wedding Coverage (Event Crew Breakdown)
+          </button>
+          <button class="btn btn-secondary" style="justify-content: flex-start; padding: 12px;" onclick="addSection('deliverables')">
+            📦 Deliverables Checklist (Albums, Reels, Graded Photos)
+          </button>
+          <button class="btn btn-secondary" style="justify-content: flex-start; padding: 12px;" onclick="addSection('gifts')">
+            🎁 Complimentary Gifts & Curated Bonuses
+          </button>
+          <button class="btn btn-secondary" style="justify-content: flex-start; padding: 12px;" onclick="addSection('investment')">
+            💰 Investment & Payment Terms
+          </button>
+          <button class="btn btn-secondary" style="justify-content: flex-start; padding: 12px;" onclick="addSection('testimonials')">
+            💬 Client Testimonials & Love Notes
+          </button>
+          <button class="btn btn-secondary" style="justify-content: flex-start; padding: 12px;" onclick="addSection('faq')">
+            ❓ FAQ Accordion (Frequently Asked Questions)
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
+
