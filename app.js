@@ -1,298 +1,148 @@
 /**
- * QUOTATION STUDIO — CORE APPLICATION & 14 TEMPLATES ENGINE
+ * SHUTTERDASH STORIES — ENGLISH QUOTATION EDITOR
+ * A curated library of 26 distinct art directions with template-specific copy,
+ * palettes, typography, layouts and demo photography.
  */
 
-// =============================================================================
-// 1. TEMPLATES REPOSITORY (10 UNIQUE STYLES WITH UNIQUE IMAGERY & PALETTES)
-// =============================================================================
+const PHOTO_URL = id => `https://images.unsplash.com/${id}?auto=format&fit=crop&w=1400&q=84`;
+const PHOTO_POOLS = {
+  Editorial: [
+    'photo-1519741497674-611481863552', 'photo-1511285560929-80b456fea0bc',
+    'photo-1583939003579-730e3918a45a', 'photo-1520854221256-17451cc331bf',
+    'photo-1519741347686-c1e0aadf4611', 'photo-1509927083803-4bd519298ac4',
+    'photo-1537633552985-df8429e8048b', 'photo-1515934751635-c81c6bc9a2d8',
+    'photo-1522673607200-164d1b6ce486', 'photo-1532712938310-34cb3982ef74'
+  ],
+  Hindu: [
+    'photo-1591604466107-ec97de577aff', 'photo-1644416004068-4c8ddb5e7d56',
+    'photo-1735052712464-9d24b69be5f5', 'photo-1760080903610-8429f0cfd42f',
+    'photo-1760080903630-29f853ec761f'
+  ],
+  Muslim: [
+    'photo-1519225421980-715cb0215aed', 'photo-1529636798458-92182e662485',
+    'photo-1465495976277-4387d4b0b4c6', 'photo-1492562080023-ab3db95bfbce',
+    'photo-1544078751-58fee2d8a03b'
+  ],
+  Christian: [
+    'photo-1769230357956-bc52ceda8c34', 'photo-1715089036251-04eb6c5011eb',
+    'photo-1741746720019-093b33ae39c6', 'photo-1655994675022-0750c1f73e42',
+    'photo-1655994586789-ac173a44aaa5'
+  ]
+};
+
+const makeTemplate = (id, name, subtitle, category, layout, colors, fonts, radius, shadow, copy, photoIndex = 0, images = null) => {
+  const [bg, cardBg, primary, accent, text, heading, muted, border, borderAccent, badgeBg] = colors;
+  const pool = PHOTO_POOLS[category] || PHOTO_POOLS.Editorial;
+  const photoAt = offset => PHOTO_URL(pool[(photoIndex + offset) % pool.length]);
+  return {
+    id, name, subtitle, category, layout, dotColor: primary,
+    theme: {
+      bg, cardBg, primary, accent, text, heading, muted, border, borderAccent, badgeBg,
+      fontHeading: fonts[0], fontBody: fonts[1], cardRadius: radius, cardShadow: shadow
+    },
+    images: images || { cover: photoAt(0), about: photoAt(1), closing: photoAt(2) },
+    copy
+  };
+};
 
 const TEMPLATES = [
-  {
-    id: 'ivory-editorial',
-    name: 'Ivory Editorial',
-    subtitle: 'Vogue Wedding & Timeless Romance',
-    dotColor: '#AD8A56',
-    theme: {
-      bg: '#FAF8F5',
-      cardBg: '#FFFFFF',
-      primary: '#AD8A56',
-      accent: '#C5A77B',
-      text: '#55504A',
-      heading: '#22201E',
-      muted: '#8E8880',
-      border: '#EAE3D8',
-      borderAccent: '#DFC8A7',
-      badgeBg: '#F5EFE6',
-      fontHeading: "'Cormorant Garamond', Georgia, serif",
-      fontBody: "'Montserrat', sans-serif",
-      cardRadius: '12px',
-      cardShadow: '0 6px 20px rgba(0, 0, 0, 0.025)'
-    },
-    images: {
-      cover: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80',
-      about: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1200&q=80',
-      closing: 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=1200&q=80'
-    }
-  },
-  {
-    id: 'midnight-noir',
-    name: 'Midnight Noir',
-    subtitle: 'Dark Cinematic Luxury & Gold',
-    dotColor: '#D4AF37',
-    theme: {
-      bg: '#121417',
-      cardBg: '#1B1E23',
-      primary: '#D4AF37',
-      accent: '#E5C158',
-      text: '#B0B5BD',
-      heading: '#F5F6F8',
-      muted: '#717882',
-      border: '#2A2F37',
-      borderAccent: '#D4AF37',
-      badgeBg: 'rgba(212, 175, 55, 0.15)',
-      fontHeading: "'Playfair Display', Georgia, serif",
-      fontBody: "'Inter', sans-serif",
-      cardRadius: '10px',
-      cardShadow: '0 8px 30px rgba(0, 0, 0, 0.4)'
-    },
-    images: {
-      cover: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80',
-      about: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1200&q=80',
-      closing: 'https://images.unsplash.com/photo-1532712938310-34cb3982ef74?auto=format&fit=crop&w=1200&q=80'
-    }
-  },
-  {
-    id: 'tuscan-boho',
-    name: 'Tuscan Boho',
-    subtitle: 'Warm Terracotta & Destination Sunshine',
-    dotColor: '#C86D51',
-    theme: {
-      bg: '#F9F5F0',
-      cardBg: '#FFFFFF',
-      primary: '#C86D51',
-      accent: '#DF8D74',
-      text: '#5B534B',
-      heading: '#332A24',
-      muted: '#968C83',
-      border: '#ECE3D8',
-      borderAccent: '#E0B5A7',
-      badgeBg: '#F7EBE7',
-      fontHeading: "'DM Serif Display', Georgia, serif",
-      fontBody: "'Plus Jakarta Sans', sans-serif",
-      cardRadius: '16px',
-      cardShadow: '0 4px 18px rgba(200, 109, 81, 0.05)'
-    },
-    images: {
-      cover: 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=1200&q=80',
-      about: 'https://images.unsplash.com/photo-1544078751-58fee2d8a03b?auto=format&fit=crop&w=1200&q=80',
-      closing: 'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=1200&q=80'
-    }
-  },
-  {
-    id: 'nordic-minimalist',
-    name: 'Nordic Minimal',
-    subtitle: 'Swiss Pure & Contemporary Fine Art',
-    dotColor: '#1F2421',
-    theme: {
-      bg: '#F6F7F9',
-      cardBg: '#FFFFFF',
-      primary: '#1F2421',
-      accent: '#4B5563',
-      text: '#4B5563',
-      heading: '#111827',
-      muted: '#9CA3AF',
-      border: '#E5E7EB',
-      borderAccent: '#9CA3AF',
-      badgeBg: '#EEF0F3',
-      fontHeading: "'Space Grotesk', sans-serif",
-      fontBody: "'Inter', sans-serif",
-      cardRadius: '4px',
-      cardShadow: '0 2px 10px rgba(0, 0, 0, 0.02)'
-    },
-    images: {
-      cover: 'https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=1200&q=80',
-      about: 'https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=1200&q=80',
-      closing: 'https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&w=1200&q=80'
-    }
-  },
-  {
-    id: 'royal-emerald',
-    name: 'Royal Emerald',
-    subtitle: 'Heritage Palace Celebrations',
-    dotColor: '#183B2B',
-    theme: {
-      bg: '#FAF8F2',
-      cardBg: '#FFFFFF',
-      primary: '#183B2B',
-      accent: '#C8A858',
-      text: '#4A564F',
-      heading: '#122E22',
-      muted: '#8A9790',
-      border: '#E8E3D3',
-      borderAccent: '#C8A858',
-      badgeBg: '#E9EFEA',
-      fontHeading: "'Cinzel', Georgia, serif",
-      fontBody: "'Montserrat', sans-serif",
-      cardRadius: '8px',
-      cardShadow: '0 6px 24px rgba(24, 59, 43, 0.04)'
-    },
-    images: {
-      cover: 'https://images.unsplash.com/photo-1591604466107-ec97de577aff?auto=format&fit=crop&w=1200&q=80',
-      about: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=1200&q=80',
-      closing: 'https://images.unsplash.com/photo-1529636798458-92182e662485?auto=format&fit=crop&w=1200&q=80'
-    }
-  },
-  {
-    id: 'blush-fairytale',
-    name: 'Blush Fairytale',
-    subtitle: 'Pastel Romance & Rose Gold',
-    dotColor: '#C98D8D',
-    theme: {
-      bg: '#FBF6F5',
-      cardBg: '#FFFFFF',
-      primary: '#C98D8D',
-      accent: '#DEABAB',
-      text: '#5A4F4F',
-      heading: '#3D3030',
-      muted: '#A39595',
-      border: '#EFE4E2',
-      borderAccent: '#E0BDBD',
-      badgeBg: '#F8ECEB',
-      fontHeading: "'Cormorant Garamond', Georgia, serif",
-      fontBody: "'Jost', sans-serif",
-      cardRadius: '18px',
-      cardShadow: '0 6px 22px rgba(201, 141, 141, 0.08)'
-    },
-    images: {
-      cover: 'https://images.unsplash.com/photo-1509927083803-4bd519298ac4?auto=format&fit=crop&w=1200&q=80',
-      about: 'https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=1200&q=80',
-      closing: 'https://images.unsplash.com/photo-1519741347686-c1e0aadf4611?auto=format&fit=crop&w=1200&q=80'
-    }
-  },
-  {
-    id: 'studio-monolith',
-    name: 'Studio Monolith',
-    subtitle: 'Bold Commercial & Fashion Edge',
-    dotColor: '#2563EB',
-    theme: {
-      bg: '#FFFFFF',
-      cardBg: '#F9FAFB',
-      primary: '#2563EB',
-      accent: '#0A0A0A',
-      text: '#374151',
-      heading: '#0A0A0A',
-      muted: '#6B7280',
-      border: '#E5E7EB',
-      borderAccent: '#2563EB',
-      badgeBg: '#EFF6FF',
-      fontHeading: "'Bodoni Moda', serif",
-      fontBody: "'Inter', sans-serif",
-      cardRadius: '6px',
-      cardShadow: '0 4px 14px rgba(0, 0, 0, 0.03)'
-    },
-    images: {
-      cover: 'https://images.unsplash.com/photo-1537633552985-df8429e8048b?auto=format&fit=crop&w=1200&q=80',
-      about: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=1200&q=80',
-      closing: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1200&q=80'
-    }
-  },
-  {
-    id: 'coastal-azure',
-    name: 'Coastal Azure',
-    subtitle: 'Mediterranean Riviera Breeze',
-    dotColor: '#1B3A57',
-    theme: {
-      bg: '#F4F8FA',
-      cardBg: '#FFFFFF',
-      primary: '#1B3A57',
-      accent: '#3B7A9E',
-      text: '#445668',
-      heading: '#112233',
-      muted: '#8598A8',
-      border: '#E1EBF0',
-      borderAccent: '#B2CDDC',
-      badgeBg: '#E9F2F7',
-      fontHeading: "'Bodoni Moda', Georgia, serif",
-      fontBody: "'Outfit', sans-serif",
-      cardRadius: '14px',
-      cardShadow: '0 6px 20px rgba(27, 58, 87, 0.04)'
-    },
-    images: {
-      cover: 'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=1200&q=80',
-      about: 'https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=1200&q=80',
-      closing: 'https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&w=1200&q=80'
-    }
-  },
-  {
-    id: 'industrial-copper',
-    name: 'Industrial Copper',
-    subtitle: 'Urban Loft Slate & Warm Bronze',
-    dotColor: '#C9743A',
-    theme: {
-      bg: '#F5F5F6',
-      cardBg: '#FFFFFF',
-      primary: '#C9743A',
-      accent: '#DF8E57',
-      text: '#4A5056',
-      heading: '#202428',
-      muted: '#8A9198',
-      border: '#E2E4E6',
-      borderAccent: '#E0B394',
-      badgeBg: '#FAF0E8',
-      fontHeading: "'Playfair Display', Georgia, serif",
-      fontBody: "'Inter', sans-serif",
-      cardRadius: '8px',
-      cardShadow: '0 4px 18px rgba(0, 0, 0, 0.03)'
-    },
-    images: {
-      cover: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80',
-      about: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1200&q=80',
-      closing: 'https://images.unsplash.com/photo-1532712938310-34cb3982ef74?auto=format&fit=crop&w=1200&q=80'
-    }
-  },
-  {
-    id: 'french-provence',
-    name: 'French Provence',
-    subtitle: 'Chateau Lavender & Fine Art Silver',
-    dotColor: '#7C6C8A',
-    theme: {
-      bg: '#F8F6F9',
-      cardBg: '#FFFFFF',
-      primary: '#7C6C8A',
-      accent: '#9A8AA8',
-      text: '#544E5B',
-      heading: '#2F2A35',
-      muted: '#928B99',
-      border: '#EBE5EF',
-      borderAccent: '#CCBFD6',
-      badgeBg: '#F3EEF7',
-      fontHeading: "'Prata', Georgia, serif",
-      fontBody: "'Lora', serif",
-      cardRadius: '12px',
-      cardShadow: '0 6px 22px rgba(124, 108, 138, 0.04)'
-    },
-    images: {
-      cover: 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=1200&q=80',
-      about: 'https://images.unsplash.com/photo-1544078751-58fee2d8a03b?auto=format&fit=crop&w=1200&q=80',
-      closing: 'https://images.unsplash.com/photo-1509927083803-4bd519298ac4?auto=format&fit=crop&w=1200&q=80'
-    }
-  }
-];
+  // ShutterDash signature: art directed from the supplied quotation PDF.
+  makeTemplate('shutterdash-signature', 'ShutterDash Signature', 'The original ShutterDash quotation', 'Signature', 'signature',
+    ['#F8F6F2','#FFFFFF','#B08B55','#C5A77B','#5C5650','#27231F','#928A80','#E8E1D7','#D4BD99','#F4EEE4'],
+    ["'Cormorant Garamond', Georgia, serif", "'Montserrat', sans-serif"], '2px', '0 10px 30px rgba(45,36,24,.06)',
+    { about:'A Story Worth Remembering', timeline:'The Celebration', coverage:'Your Event Coverage', deliverables:'Thoughtfully Delivered', gifts:'A Few Lovely Extras', investment:'The Investment', faq:'Helpful Details', testimonials:'Kind Words', closing:'Thank You' }, 0,
+    { cover:PHOTO_URL('photo-1606800052052-a08af7148866'), about:PHOTO_URL('photo-1519741347686-c1e0aadf4611'), closing:PHOTO_URL('photo-1492562080023-ab3db95bfbce') }),
 
-// Four additional complete looks; each carries its own type scale, palette and layout signature.
-TEMPLATES.push(
-  { id:'sage-manor', name:'Sage Manor', subtitle:'Garden Estate · Organic Editorial', dotColor:'#71866D', theme:{bg:'#F4F6EF',cardBg:'#FEFFF9',primary:'#526B55',accent:'#A4AE88',text:'#4C5649',heading:'#26362B',muted:'#849080',border:'#DDE3D6',borderAccent:'#AEBB9A',badgeBg:'#E6EBDF',fontHeading:"'Lora', Georgia, serif",fontBody:"'Jost', sans-serif",cardRadius:'2px',cardShadow:'0 12px 30px rgba(49,72,52,.08)'}, images:{cover:'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80',about:'https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&w=1200&q=80',closing:'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1200&q=80'}, copy:{timeline:'The day, in moments',coverage:'The people beside you',deliverables:'Made to keep',gifts:'A little extra',investment:'The collection',faq:'Before the day',testimonials:'Their stories'} },
-  { id:'art-deco-gold', name:'Gilded Deco', subtitle:'1920s Glamour · Geometric Luxe', dotColor:'#B79045', theme:{bg:'#F8F4EA',cardBg:'#FFFDF6',primary:'#87672D',accent:'#C3A35D',text:'#504638',heading:'#251E13',muted:'#90836C',border:'#E5D9BC',borderAccent:'#BA9A58',badgeBg:'#F1E8D2',fontHeading:"'Cinzel', Georgia, serif",fontBody:"'Montserrat', sans-serif",cardRadius:'0px',cardShadow:'0 8px 28px rgba(72,52,18,.09)'}, images:{cover:'https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=1200&q=80',about:'https://images.unsplash.com/photo-1532712938310-34cb3982ef74?auto=format&fit=crop&w=1200&q=80',closing:'https://images.unsplash.com/photo-1529636798458-92182e662485?auto=format&fit=crop&w=1200&q=80'}, copy:{timeline:'An evening in chapters',coverage:'Your celebration cast',deliverables:'The final edit',gifts:'Thoughtful extras',investment:'The agreement',faq:'Good to know',testimonials:'Notes from our couples'} },
-  { id:'sakura-dream', name:'Sakura Dream', subtitle:'Japanese Garden · Soft Poetic Romance', dotColor:'#CA8791', theme:{bg:'#FCF6F5',cardBg:'#FFFBFA',primary:'#A95F6B',accent:'#D6A0A5',text:'#625054',heading:'#39252C',muted:'#A18D91',border:'#F0E1E2',borderAccent:'#D7B2B5',badgeBg:'#F7E8E9',fontHeading:"'Cormorant Garamond', Georgia, serif",fontBody:"'Lora', serif",cardRadius:'28px',cardShadow:'0 10px 32px rgba(169,95,107,.08)'}, images:{cover:'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=1200&q=80',about:'https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=1200&q=80',closing:'https://images.unsplash.com/photo-1509927083803-4bd519298ac4?auto=format&fit=crop&w=1200&q=80'}, copy:{timeline:'A day to remember',coverage:'All who make it yours',deliverables:'Keepsakes for years',gifts:'Little love notes',investment:'Your bespoke story',faq:'A few little details',testimonials:'Love, in their words'} },
-  { id:'monsoon-ink', name:'Monsoon Ink', subtitle:'Modern South Asian · Indigo & Brass', dotColor:'#335D83', theme:{bg:'#F1F4F7',cardBg:'#FAFBFD',primary:'#264E73',accent:'#B68B50',text:'#455565',heading:'#14283B',muted:'#83909C',border:'#D9E0E7',borderAccent:'#B68B50',badgeBg:'#E2EAF1',fontHeading:"'Playfair Display', Georgia, serif",fontBody:"'Outfit', sans-serif",cardRadius:'3px',cardShadow:'0 14px 32px rgba(28,55,78,.12)'}, images:{cover:'https://images.unsplash.com/photo-1591604466107-ec97de577aff?auto=format&fit=crop&w=1200&q=80',about:'https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=1200&q=80',closing:'https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&w=1200&q=80'}, copy:{timeline:'Celebration itinerary',coverage:'The event crew',deliverables:'What we will create',gifts:'Included with care',investment:'Investment & booking',faq:'Planning notes',testimonials:'Kind words'} }
-);
+  // Ten fresh editorial and contemporary looks.
+  makeTemplate('paper-atelier', 'Paper Atelier', 'Warm paper, fine type and quiet detail', 'Editorial', 'paper',
+    ['#F5F1E9','#FFFCF6','#8E6D4D','#C4A47D','#5E554A','#29241E','#958A7D','#E6DCCB','#B7966A','#F0E8DB'], ["'Prata', Georgia, serif", "'Lora', Georgia, serif"], '0px', '0 12px 34px rgba(74,58,39,.07)',
+    { about:'The Story, Thoughtfully Told', timeline:'The Day at a Glance', coverage:'Your Dedicated Crew', deliverables:'Made to Last', gifts:'Considered Extras', investment:'Your Collection', faq:'Before the Day', testimonials:'Notes from Our Couples', closing:'With Warm Wishes' }, 0),
+  makeTemplate('velvet-afterdark', 'Velvet Afterdark', 'A cinematic look for candlelit celebrations', 'Editorial', 'velvet',
+    ['#17171D','#22212A','#C7A56C','#E5CB9F','#D0C9C1','#F7F2E9','#8C8590','#3B3843','#BA9860','#302C35'], ["'Bodoni Moda', Georgia, serif", "'Inter', sans-serif"], '3px', '0 16px 42px rgba(0,0,0,.32)',
+    { about:'The Feeling Between Frames', timeline:'An Evening in Scenes', coverage:'The Production Team', deliverables:'The Final Cut', gifts:'A Private Preview', investment:'The Collection', faq:'Production Notes', testimonials:'After the Applause', closing:'End Credits' }, 1),
+  makeTemplate('desert-modern', 'Desert Modern', 'Sun-warmed terracotta and sculptural forms', 'Editorial', 'desert',
+    ['#F7F0E9','#FFFBF6','#B85E42','#D89A75','#5C4A40','#35271F','#9B8679','#E9D8CA','#CB8A67','#F1E2D6'], ["'DM Serif Display', Georgia, serif", "'Jost', sans-serif"], '18px', '0 10px 26px rgba(139,76,51,.09)',
+    { about:'A Celebration with Character', timeline:'A Day in Warm Light', coverage:'Your Gathering', deliverables:'Keepsakes and Films', gifts:'Little Added Joys', investment:'The Collection', faq:'Before We Begin', testimonials:'Stories from Our Couples', closing:'With Love, Always' }, 2),
+  makeTemplate('quiet-architecture', 'Quiet Architecture', 'Precise spacing and gallery-like restraint', 'Editorial', 'quiet',
+    ['#F2F4F3','#FFFFFF','#344B49','#8BA09B','#56615E','#182522','#98A39F','#DCE3E0','#AABBB5','#E8EFEC'], ["'Space Grotesk', sans-serif", "'Inter', sans-serif"], '0px', 'none',
+    { about:'A Clear Point of View', timeline:'The Schedule', coverage:'The Crew', deliverables:'The Deliverables', gifts:'Included', investment:'The Fee', faq:'Project Notes', testimonials:'Client Reflections', closing:'Thank You' }, 3),
+  makeTemplate('gallery-noir', 'Gallery Noir', 'Black, white and editorial art direction', 'Editorial', 'gallery',
+    ['#F5F4F1','#FFFFFF','#1B1B1B','#A8906A','#55514A','#141414','#8A8580','#D9D6D0','#A8906A','#ECE9E3'], ["'Bodoni Moda', Georgia, serif", "'Montserrat', sans-serif"], '0px', '0 8px 20px rgba(0,0,0,.045)',
+    { about:'The Art of Looking Closer', timeline:'A Sequence of Moments', coverage:'Creative Direction', deliverables:'The Image Set', gifts:'Selected Prints', investment:'Project Investment', faq:'The Details', testimonials:'In Their Words', closing:'The Final Frame' }, 4),
+  makeTemplate('coastal-linen', 'Coastal Linen', 'Salt air, soft blue and natural linen', 'Editorial', 'coastal',
+    ['#EFF5F5','#FFFFFF','#326778','#7CA8AC','#4C6062','#1E3D45','#8AA1A3','#D7E6E6','#9DBFC1','#E3F0EF'], ["'Lora', Georgia, serif", "'Outfit', sans-serif"], '20px', '0 9px 28px rgba(39,92,105,.08)',
+    { about:'A Little About Our Studio', timeline:'By the Water and Time', coverage:'Your Crew', deliverables:'What We Create', gifts:'Coastal Keepsakes', investment:'The Collection', faq:'Before You Set Sail', testimonials:'Postcards from Our Couples', closing:'See You by the Sea' }, 5),
+  makeTemplate('botanical-house', 'Botanical House', 'Garden greens with delicate botanical rules', 'Editorial', 'botanical',
+    ['#F1F4EC','#FCFDF8','#536B50','#A5B08A','#515B4D','#283829','#8D9784','#DCE3D4','#9CAC89','#E6ECDF'], ["'Lora', Georgia, serif", "'Jost', sans-serif"], '4px', '0 12px 30px rgba(47,74,50,.08)',
+    { about:'A Story Rooted in Feeling', timeline:'The Day in Moments', coverage:'The People Beside You', deliverables:'Made to Keep', gifts:'A Little Extra', investment:'The Collection', faq:'Before the Garden Opens', testimonials:'Their Stories', closing:'With Warm Wishes' }, 6),
+  makeTemplate('terracotta-studio', 'Terracotta Studio', 'Bold blocks, warm clay and clean geometry', 'Editorial', 'terracotta',
+    ['#F6EEE6','#FFF9F2','#B9573F','#DB805F','#57483F','#38261F','#998378','#E8D6C9','#CB8062','#F0E0D4'], ["'DM Serif Display', Georgia, serif", "'Plus Jakarta Sans', sans-serif"], '6px', '6px 6px 0 #E9D8CB',
+    { about:'A Studio with a Point of View', timeline:'The Run of Show', coverage:'Crew and Production', deliverables:'The Final Assets', gifts:'Added with Care', investment:'Project Investment', faq:'Production Notes', testimonials:'Client References', closing:'Until the Last Dance' }, 7),
+  makeTemplate('blue-hour', 'Blue Hour', 'Deep blue, soft silver and a modern split cover', 'Editorial', 'blue-hour',
+    ['#EDF1F6','#FFFFFF','#34516E','#91A7BC','#4D5967','#1A2A3A','#8795A4','#D9E1EA','#A8BBCB','#E3EAF1'], ["'Playfair Display', Georgia, serif", "'Inter', sans-serif"], '8px', '0 12px 30px rgba(26,52,77,.12)',
+    { about:'The Hours Between Daylight', timeline:'A Night in Chapters', coverage:'Your Event Team', deliverables:'The Finished Story', gifts:'A Thoughtful Addition', investment:'The Agreement', faq:'A Few Details', testimonials:'Notes from the Dance Floor', closing:'Until the Lights Go Out' }, 8),
+  makeTemplate('heirloom-crest', 'Heirloom Crest', 'A formal keepsake with tailored gold details', 'Editorial', 'heirloom',
+    ['#F7F3E9','#FFFDF7','#715A31','#B99B60','#59513F','#302817','#94896F','#E4DAC5','#B69A5E','#F0E8D6'], ["'Cinzel', Georgia, serif", "'Montserrat', sans-serif"], '2px', '0 8px 26px rgba(89,70,31,.08)',
+    { about:'A Legacy in Every Frame', timeline:'The Celebration Order', coverage:'Your Wedding Ensemble', deliverables:'Heirlooms to Keep', gifts:'Complimentary Details', investment:'The Investment', faq:'Guest Guidance', testimonials:'Patron Notes', closing:'With Gratitude' }, 9),
+
+  // Hindu wedding collection: English-only copy with ceremony-aware art direction.
+  makeTemplate('hindu-sacred-fire', 'Hindu Wedding — Sacred Fire', 'Marigold, vermilion and a ceremonial glow', 'Hindu', 'sacred-fire',
+    ['#FBF3E7','#FFFCF6','#B94728','#E3A52B','#654A36','#402819','#9E856C','#EFDDC6','#D6A244','#F7E9D2'], ["'Cinzel', Georgia, serif", "'Jost', sans-serif"], '12px', '0 10px 28px rgba(150,73,33,.11)',
+    { about:'A Celebration of Two Families', timeline:'The Ceremony and Celebration', coverage:'Every Ritual, Carefully Covered', deliverables:'Memories for Generations', gifts:'Family Keepsakes', investment:'Your Wedding Collection', faq:'A Few Helpful Details', testimonials:'Blessings from Our Couples', closing:'With Joy and Gratitude' }, 0),
+  makeTemplate('hindu-garland-garden', 'Hindu Wedding — Garland Garden', 'Fresh florals, leaf green and warm ivory', 'Hindu', 'garland-garden',
+    ['#F2F4EA','#FFFEF8','#567344','#C27B3A','#56604D','#28372C','#929B82','#E0E5D6','#B99863','#E9EDDE'], ["'Lora', Georgia, serif", "'Outfit', sans-serif"], '22px', '0 9px 24px rgba(65,88,48,.08)',
+    { about:'A Day Shared with Family', timeline:'From Welcome to Blessings', coverage:'The Ceremony in Every Detail', deliverables:'A Living Family Archive', gifts:'Thoughtful Family Prints', investment:'Your Celebration Collection', faq:'Planning Together', testimonials:'Words from the Families', closing:'A Beautiful Beginning' }, 1),
+  makeTemplate('hindu-royal-pavilion', 'Hindu Wedding — Royal Pavilion', 'Ruby, antique gold and palace-inspired framing', 'Hindu', 'royal-pavilion',
+    ['#F8F0E8','#FFF9F2','#8F2436','#C69A48','#5A4541','#341A22','#968075','#E7D3C7','#BE9848','#F0E1D5'], ["'Prata', Georgia, serif", "'Montserrat', sans-serif"], '0px', '0 12px 30px rgba(94,32,43,.12)',
+    { about:'A Royal Welcome', timeline:'The Celebration Procession', coverage:'The Ceremony Portraits', deliverables:'Treasured Album Chapters', gifts:'Keepsakes for the Family', investment:'The Wedding Commission', faq:'Before the Celebration', testimonials:'Family Memories', closing:'With Every Blessing' }, 2),
+  makeTemplate('hindu-saffron-sky', 'Hindu Wedding — Saffron Sky', 'A bright, modern ceremony with saffron accents', 'Hindu', 'saffron-sky',
+    ['#FCF4EB','#FFFFFF','#C56A2D','#E3A33E','#5D5147','#372A20','#A08F7E','#EDE0D2','#DEA553','#F7EBDD'], ["'DM Serif Display', Georgia, serif", "'Plus Jakarta Sans', sans-serif"], '8px', '0 8px 24px rgba(177,95,38,.08)',
+    { about:'A Modern Family Celebration', timeline:'The Day, Beautifully Timed', coverage:'The Full Ceremony Team', deliverables:'Every Moment, Preserved', gifts:'Small Tokens of Thanks', investment:'The Photography Collection', faq:'What to Expect', testimonials:'Celebrations Remembered', closing:'With Love from Our Studio' }, 3),
+  makeTemplate('hindu-vermillion-modern', 'Hindu Wedding — Vermilion Modern', 'Clean ivory layouts with confident red accents', 'Hindu', 'vermillion-modern',
+    ['#F8F4EF','#FFFEFC','#A93535','#C98C68','#584B48','#321F1F','#968782','#E9DEDA','#C68D72','#F3E7E3'], ["'Bodoni Moda', Georgia, serif", "'Inter', sans-serif"], '0px', 'none',
+    { about:'A Story Made Together', timeline:'The Wedding Schedule', coverage:'Moments Across the Ceremony', deliverables:'The Essential Story', gifts:'Prints for Your Home', investment:'Wedding Photography', faq:'The Practical Details', testimonials:'Notes from the Celebration', closing:'A Lifetime of Stories' }, 4),
+
+  // Muslim wedding collection: English-only copy, refined geometry and crescent-inspired motifs.
+  makeTemplate('muslim-ivory-crescent', 'Muslim Wedding — Ivory Crescent', 'Ivory paper, midnight blue and delicate geometry', 'Muslim', 'ivory-crescent',
+    ['#F7F5EF','#FFFEFA','#27445D','#B69B64','#53606A','#1A2D3C','#8A969B','#E0E3DF','#B5A16E','#EAECE5'], ["'Prata', Georgia, serif", "'Lora', Georgia, serif"], '6px', '0 9px 26px rgba(32,60,79,.08)',
+    { about:'A Promise Shared with Family', timeline:'The Marriage Celebration', coverage:'Every Important Moment', deliverables:'A Story to Keep', gifts:'Family Portraits', investment:'The Wedding Collection', faq:'A Few Helpful Details', testimonials:'Words of Blessing', closing:'With Warm Wishes' }, 0),
+  makeTemplate('muslim-emerald-arch', 'Muslim Wedding — Emerald Arch', 'Emerald, parchment and arch-inspired framing', 'Muslim', 'emerald-arch',
+    ['#F3F4EE','#FCFCF8','#20584B','#B89A5B','#4F605A','#17372F','#87948B','#DDE4DC','#B89C66','#E5ECE4'], ["'Cinzel', Georgia, serif", "'Montserrat', sans-serif"], '2px', '0 12px 30px rgba(29,78,65,.1)',
+    { about:'A Promise for a Lifetime', timeline:'The Celebration in Order', coverage:'The Family and Ceremony', deliverables:'Keepsakes with Meaning', gifts:'A Gift for the Families', investment:'Your Photography Collection', faq:'Planning Notes', testimonials:'Family Reflections', closing:'With Blessings and Joy' }, 1),
+  makeTemplate('muslim-garden-gathering', 'Muslim Wedding — Garden Gathering', 'Soft sage and rose for an intimate gathering', 'Muslim', 'garden-gathering',
+    ['#F3F5F0','#FFFFFF','#687A5B','#C59682','#596256','#303D31','#939B8B','#E0E5DE','#C3A18D','#EBEFE9'], ["'Cormorant Garamond', Georgia, serif", "'Jost', sans-serif"], '18px', '0 10px 28px rgba(65,82,59,.08)',
+    { about:'Together, Surrounded by Family', timeline:'A Gentle Celebration Flow', coverage:'The Gathering and Ceremony', deliverables:'A Complete Keepsake Story', gifts:'Thoughtful Prints', investment:'The Photography Plan', faq:'Before the Gathering', testimonials:'Family Words', closing:'With Gratitude' }, 2),
+  makeTemplate('muslim-moonlit-reception', 'Muslim Wedding — Moonlit Reception', 'Ink blue, silver and an atmospheric evening glow', 'Muslim', 'moonlit',
+    ['#172536','#202F3E','#A9BFD0','#D8C49B','#BFC9D0','#F4F5F4','#8294A0','#334556','#B5C7D4','#283A49'], ["'Playfair Display', Georgia, serif", "'Inter', sans-serif"], '4px', '0 16px 42px rgba(9,22,36,.28)',
+    { about:'A Night to Remember', timeline:'The Evening Unfolds', coverage:'The Celebration Team', deliverables:'The Complete Story', gifts:'A Private Album Preview', investment:'The Collection and Terms', faq:'The Evening Details', testimonials:'Memories in Their Words', closing:'Until the Last Light' }, 3),
+  makeTemplate('muslim-modern-contract', 'Muslim Wedding — Modern Contract', 'A clear, contemporary document with warm accents', 'Muslim', 'modern-contract',
+    ['#F6F3EF','#FFFFFF','#745B49','#B59373','#59534D','#302922','#90867C','#E3DCD4','#B99B7D','#EEE6DD'], ["'Space Grotesk', sans-serif", "'Inter', sans-serif"], '0px', '0 4px 16px rgba(62,47,34,.04)',
+    { about:'The Story Behind the Day', timeline:'The Event Schedule', coverage:'Your Photography Team', deliverables:'What Is Included', gifts:'A Small Thank You', investment:'The Package and Terms', faq:'Clear Answers', testimonials:'Client Notes', closing:'Thank You for Your Trust' }, 4),
+
+  // Christian wedding collection: chapel, garden and stained-glass art direction.
+  makeTemplate('christian-chapel-vows', 'Christian Wedding — Chapel Vows', 'Ivory, navy and a chapel-inspired composition', 'Christian', 'chapel-vows',
+    ['#F5F3EE','#FFFFFF','#29465C','#B79C71','#535C61','#1B2E3B','#89939A','#DEE1DD','#BCA67B','#EBECE7'], ["'Cormorant Garamond', Georgia, serif", "'Montserrat', sans-serif"], '4px', '0 10px 28px rgba(28,51,66,.08)',
+    { about:'A Promise Made Together', timeline:'The Ceremony and Reception', coverage:'The Day from Every Angle', deliverables:'The Vow and Celebration Story', gifts:'A Keepsake for the Family', investment:'Your Wedding Collection', faq:'Helpful Ceremony Details', testimonials:'Words from Our Couples', closing:'With Joy and Gratitude' }, 0),
+  makeTemplate('christian-garden-blessing', 'Christian Wedding — Garden Blessing', 'Soft florals, open air and gentle green', 'Christian', 'garden-blessing',
+    ['#F4F5EF','#FFFFFC','#607A63','#B39A78','#586258','#2A3D2E','#939B8E','#E0E5DC','#BCA987','#E9EDE5'], ["'Lora', Georgia, serif", "'Jost', sans-serif"], '20px', '0 10px 28px rgba(66,91,66,.08)',
+    { about:'A Day Surrounded by Love', timeline:'The Ceremony Day', coverage:'The Vows and Gathering', deliverables:'Memories to Treasure', gifts:'A Little Extra', investment:'Your Collection', faq:'Before the Celebration', testimonials:'Notes from Our Guests', closing:'A Beautiful Beginning' }, 1),
+  makeTemplate('christian-stained-glass', 'Christian Wedding — Stained Glass', 'Jewel tones and light-inspired color panels', 'Christian', 'stained-glass',
+    ['#F4F2EB','#FFFDF6','#56558B','#B77865','#56545E','#282642','#918B95','#E3DFE3','#B39A9A','#ECE8EF'], ["'Prata', Georgia, serif", "'Outfit', sans-serif"], '0px', '0 10px 26px rgba(71,59,91,.09)',
+    { about:'A Story Filled with Light', timeline:'The Service and Celebration', coverage:'The Ceremony Team', deliverables:'The Complete Keepsake', gifts:'Prints to Share', investment:'The Photography Collection', faq:'A Few Details', testimonials:'Words of Love', closing:'With Every Good Wish' }, 2),
+  makeTemplate('christian-coastal-ceremony', 'Christian Wedding — Coastal Ceremony', 'Sea glass, pale blue and a breezy ceremony layout', 'Christian', 'coastal-ceremony',
+    ['#EFF5F5','#FFFFFF','#356575','#93B7B6','#4D6165','#213F48','#8A9FA0','#D9E7E6','#A8C5C4','#E6F0EF'], ["'Bodoni Moda', Georgia, serif", "'Outfit', sans-serif"], '14px', '0 9px 24px rgba(41,91,103,.08)',
+    { about:'A Promise by the Water', timeline:'The Service and Celebration', coverage:'The Ceremony and Guests', deliverables:'The Wedding Story', gifts:'A Thoughtful Print Set', investment:'Your Collection', faq:'Before the Service', testimonials:'Messages from Our Couples', closing:'See You at the Shore' }, 3),
+  makeTemplate('christian-modern-chapel', 'Christian Wedding — Modern Chapel', 'Modern vows with white space and refined structure', 'Christian', 'modern-chapel',
+    ['#F7F7F5','#FFFFFF','#35414A','#8997A0','#525A60','#20282E','#92999D','#E1E3E2','#A7B1B5','#ECEEEC'], ["'Space Grotesk', sans-serif", "'Inter', sans-serif"], '0px', 'none',
+    { about:'A Story Built on Promises', timeline:'The Order of the Day', coverage:'The Ceremony and Reception Team', deliverables:'The Final Collection', gifts:'Family Prints', investment:'The Photography Agreement', faq:'Planning Details', testimonials:'Client Reflections', closing:'Thank You' }, 4)
+];
 
 // =============================================================================
 // 2. MASTER APPLICATION STATE
 // =============================================================================
 
 const AppState = {
-  currentTemplateId: 'ivory-editorial',
+  currentTemplateId: 'shutterdash-signature',
   isInlineEdit: false,
   zoom: 1.0,
   activeImageTarget: null,
@@ -526,18 +376,50 @@ document.addEventListener('DOMContentLoaded', () => {
   updateUndoButton();
 });
 
-// Render the 10 template selection buttons
+let activeTemplateCategory = 'All';
+
+const TEMPLATE_FILTERS = [
+  { id: 'All', label: () => `All ${TEMPLATES.length}` },
+  { id: 'Editorial', label: count => `Editorial ${count}` },
+  { id: 'Hindu', label: count => `Hindu ${count}` },
+  { id: 'Muslim', label: count => `Muslim ${count}` },
+  { id: 'Christian', label: count => `Christian ${count}` },
+  { id: 'Signature', label: count => `Signature ${count}` }
+];
+
+// Render the filtered 26-design library and its category controls.
 function renderTemplateStrip() {
   const container = document.getElementById('template-chips');
   if (!container) return;
+  const categoryTabs = document.getElementById('template-category-tabs');
+  const visibleTemplates = activeTemplateCategory === 'All'
+    ? TEMPLATES
+    : TEMPLATES.filter(template => template.category === activeTemplateCategory);
 
-  container.innerHTML = TEMPLATES.map(t => `
-    <button class="tmpl-chip ${t.id === AppState.currentTemplateId ? 'active' : ''}" 
-            onclick="switchTemplate('${t.id}')">
-      <span class="tmpl-dot" style="background: ${t.dotColor};"></span>
-      <span>${t.name}</span>
+  if (categoryTabs) {
+    categoryTabs.innerHTML = TEMPLATE_FILTERS.map(filter => {
+      const count = filter.id === 'All' ? TEMPLATES.length : TEMPLATES.filter(template => template.category === filter.id).length;
+      const label = typeof filter.label === 'function' ? filter.label(count) : filter.label;
+      return `<button type="button" class="template-category-tab ${filter.id === activeTemplateCategory ? 'active' : ''}" aria-pressed="${filter.id === activeTemplateCategory}" onclick="filterTemplateCategory('${filter.id}')">${label}</button>`;
+    }).join('');
+  }
+
+  container.innerHTML = visibleTemplates.map(template => `
+    <button class="tmpl-chip ${template.id === AppState.currentTemplateId ? 'active' : ''}"
+            title="${template.subtitle}" aria-label="${template.name}, ${template.category} design"
+            onclick="switchTemplate('${template.id}')">
+      <span class="tmpl-preview" style="--template-swatch:${template.dotColor}"><img src="${template.images.cover}" alt="" loading="lazy"></span>
+      <span class="tmpl-chip-copy"><strong>${template.name}</strong><small>${template.category} design</small></span>
     </button>
   `).join('');
+  const countLabel = document.getElementById('template-results-count');
+  if (countLabel) countLabel.textContent = `${visibleTemplates.length} ${visibleTemplates.length === 1 ? 'design' : 'designs'}`;
+}
+
+function filterTemplateCategory(category) {
+  if (!TEMPLATE_FILTERS.some(filter => filter.id === category)) return;
+  activeTemplateCategory = category;
+  renderTemplateStrip();
 }
 
 // Switch to a new template
@@ -559,6 +441,7 @@ function applyTemplate(templateId) {
 
   const root = document.documentElement;
   root.dataset.template = templateId;
+  root.dataset.layout = tmpl.layout;
   const theme = tmpl.theme;
 
   root.style.setProperty('--tmpl-bg', theme.bg);
@@ -611,43 +494,7 @@ function rgbOrHex(val) {
 }
 
 function sectionHeading(tmpl, key, fallback) {
-  const special = {
-    'ivory-editorial': ['A story worth remembering', 'Until the next chapter'],
-    'midnight-noir': ['The frame, the feeling', 'End credits'],
-    'tuscan-boho': ['Our way of seeing', 'With love, always'],
-    'nordic-minimalist': ['The approach', 'Thank you'],
-    'royal-emerald': ['A legacy in every frame', 'With gratitude'],
-    'blush-fairytale': ['Made for your memories', 'Happily, ever after'],
-    'studio-monolith': ['Creative direction', 'Project close'],
-    'coastal-azure': ['A little about us', 'See you by the sea'],
-    'industrial-copper': ['Production ethos', 'End of brief'],
-    'french-provence': ['Notre regard', 'À bientôt'],
-    'sage-manor': ['Our point of view', 'With warm wishes'],
-    'art-deco-gold': ['The creative house', 'A grand finale'],
-    'sakura-dream': ['The way we see you', 'Until we meet again'],
-    'monsoon-ink': ['Our visual language', 'Until the big day']
-  }[tmpl?.id];
-  if (key === 'about') return special?.[0] || fallback;
-  if (key === 'closing') return special?.[1] || fallback;
-  const wording = {
-    'ivory-editorial': ['The celebration', 'Your event coverage', 'Thoughtfully delivered', 'A few lovely extras', 'The investment', 'Good to know', 'Kind words'],
-    'midnight-noir': ['The night unfolds', 'The production team', 'Final deliverables', 'Included privileges', 'Collection & terms', 'Details & answers', 'Client notes'],
-    'tuscan-boho': ['A day in the sun', 'Your gathering', 'Keepsakes & films', 'Little added joys', 'The collection', 'Before we begin', 'Love notes'],
-    'nordic-minimalist': ['The schedule', 'The crew', 'Deliverables', 'Included', 'Pricing', 'Questions', 'Testimonials'],
-    'royal-emerald': ['Celebration itinerary', 'The wedding ensemble', 'Heirloom deliverables', 'Complimentary honours', 'The investment', 'Guest guidance', 'Patron testimonials'],
-    'blush-fairytale': ['A day made of moments', 'The dream team', 'Memories to treasure', 'Sweet surprises', 'Your love story', 'Little questions', 'Love from our couples'],
-    'studio-monolith': ['The brief', 'Production plan', 'Final assets', 'Included services', 'Project fee', 'Project notes', 'Client feedback'],
-    'coastal-azure': ['By the tide & time', 'Your crew', 'What we create', 'Coastal extras', 'The collection', 'Before setting sail', 'From our couples'],
-    'industrial-copper': ['Run of show', 'Crew & production', 'Deliverables list', 'Added value', 'Project investment', 'Production notes', 'Client references'],
-    'french-provence': ['Le déroulement', 'Votre équipe', 'Les souvenirs', 'Les attentions', 'Votre collection', 'Quelques précisions', 'Mots doux'],
-    'sage-manor': ['The day, in moments', 'The people beside you', 'Made to keep', 'A little extra', 'The collection', 'Before the day', 'Their stories'],
-    'art-deco-gold': ['An evening in chapters', 'Your celebration cast', 'The final edit', 'Thoughtful extras', 'The agreement', 'Good to know', 'Notes from our couples'],
-    'sakura-dream': ['A day to remember', 'All who make it yours', 'Keepsakes for years', 'Little love notes', 'Your bespoke story', 'A few little details', 'Love, in their words'],
-    'monsoon-ink': ['Celebration itinerary', 'The event crew', 'What we will create', 'Included with care', 'Investment & booking', 'Planning notes', 'Kind words']
-  }[tmpl?.id];
-  const keys = ['timeline','coverage','deliverables','gifts','investment','faq','testimonials'];
-  const value = tmpl?.copy?.[key] || (wording ? wording[keys.indexOf(key)] : '');
-  return value || fallback;
+  return tmpl?.copy?.[key] || fallback;
 }
 
 // =============================================================================
@@ -1418,7 +1265,15 @@ function openImageModal(target, currentUrl) {
     'https://images.unsplash.com/photo-1509927083803-4bd519298ac4?auto=format&fit=crop&w=600&q=80'
   ];
 
-  grid.innerHTML = allImages.map(img => `
+  const seenPhotos = new Set();
+  const uniqueImages = allImages.filter(imageUrl => {
+    const key = imageUrl.split('?')[0];
+    if (seenPhotos.has(key)) return false;
+    seenPhotos.add(key);
+    return true;
+  });
+
+  grid.innerHTML = uniqueImages.map(img => `
     <div class="preset-img-thumb ${img === currentUrl ? 'selected' : ''}" onclick="selectImage('${img}')">
       <img src="${img}" alt="Thumbnail">
     </div>

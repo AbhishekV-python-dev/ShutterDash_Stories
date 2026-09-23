@@ -200,24 +200,10 @@ body {
   transition: all 0.2s ease;
 }
 
-/* Give the ten ready-made looks distinct editorial signatures beyond their palettes. */
+/* Each template keeps its art direction when text, photos and colors are edited. */
 #document-canvas [data-section="cover"] .cover-content,
 #document-canvas [data-section="about"] .about-left,
 #document-canvas [data-section="custom"] .section-header { position: relative; }
-html[data-template="midnight-noir"] .page { border: 1px solid rgba(212,175,55,.22); }
-html[data-template="midnight-noir"] .section-title { letter-spacing: .035em; }
-html[data-template="tuscan-boho"] .timeline-card,
-html[data-template="tuscan-boho"] .coverage-card { border-left: 4px solid var(--tmpl-primary); }
-html[data-template="nordic-minimalist"] .timeline-card,
-html[data-template="nordic-minimalist"] .coverage-card { border: 1px solid var(--tmpl-border); box-shadow: none; }
-html[data-template="royal-emerald"] .section-subtitle { letter-spacing: .22em; }
-html[data-template="blush-fairytale"] .deliverable-item,
-html[data-template="blush-fairytale"] .gift-card { border-radius: 20px; }
-html[data-template="coastal-azure"] .timeline-dot-inner { box-shadow: 0 0 0 4px var(--tmpl-badge-bg); }
-html[data-template="industrial-copper"] .section-title { text-transform: uppercase; letter-spacing: .04em; }
-html[data-template="french-provence"] .section-title { font-style: italic; }
-html[data-template="studio-monolith"] .cover-brand { letter-spacing: .24em; }
-html[data-template="industrial-copper"] .gift-card { border-radius: 24px 8px 24px 8px; }
 
 .cover-client { margin-top: 11px; color: var(--tmpl-accent); font: 500 9px var(--tmpl-font-body); letter-spacing: .18em; text-transform: uppercase; }
 .page-custom { display: flex; flex-direction: column; justify-content: center; padding: 42mm 25mm; background: var(--tmpl-bg); color: var(--tmpl-text); }
@@ -256,72 +242,168 @@ html[data-template="industrial-copper"] .gift-card { border-radius: 24px 8px 24p
 .free-text-field:hover,.free-text-field.is-selected { border-color:var(--tmpl-primary); background:color-mix(in srgb,var(--tmpl-card-bg) 72%,transparent); }
 .free-text-content { min-height:24px; outline:none; overflow-wrap:anywhere; white-space:pre-wrap; cursor:text; }
 
-/* Template-specific art direction changes page composition, not just colors. */
-html[data-template="ivory-editorial"] .page-center { padding: 68px 72px; }
-html[data-template="ivory-editorial"] .section-header { margin-bottom: 46px; }
-html[data-template="midnight-noir"] .page-center { padding: 74px 68px; }
-html[data-template="midnight-noir"] .section-header { text-align: left; }
-html[data-template="midnight-noir"] .header-divider { margin-left: 0; }
-html[data-template="midnight-noir"] .timeline-card, html[data-template="midnight-noir"] .breakdown-card, html[data-template="midnight-noir"] .testimonial-card, html[data-template="midnight-noir"] .faq-card { border-color: var(--tmpl-border-accent); }
-html[data-template="tuscan-boho"] .page-center { padding: 54px; }
-html[data-template="tuscan-boho"] .section-header { text-align: left; padding-left: 20px; border-left: 3px solid var(--tmpl-primary); }
-html[data-template="tuscan-boho"] .header-divider { margin-left: 0; }
-html[data-template="tuscan-boho"] .gift-card, html[data-template="tuscan-boho"] .breakdown-card { border-bottom: 4px solid var(--tmpl-primary); }
-html[data-template="nordic-minimalist"] .page-center { padding: 74px 82px; }
-html[data-template="nordic-minimalist"] .section-header { text-align: left; margin-bottom: 54px; }
-html[data-template="nordic-minimalist"] .header-divider { display: none; }
-html[data-template="nordic-minimalist"] .timeline-card, html[data-template="nordic-minimalist"] .breakdown-card, html[data-template="nordic-minimalist"] .deliverable-card, html[data-template="nordic-minimalist"] .gift-card, html[data-template="nordic-minimalist"] .testimonial-card, html[data-template="nordic-minimalist"] .faq-card { border: 0; border-bottom: 1px solid var(--tmpl-border); border-radius: 0; box-shadow: none; }
-html[data-template="royal-emerald"] .page::after { content:""; position:absolute; inset:14px; border:1px double var(--tmpl-border-accent); pointer-events:none; z-index:3; }
-html[data-template="royal-emerald"] .breakdown-card, html[data-template="royal-emerald"] .gift-card { outline:1px solid var(--tmpl-border-accent); outline-offset:4px; }
-html[data-template="blush-fairytale"] .page-center { padding: 56px 54px; }
-html[data-template="blush-fairytale"] .header-divider { width: 68px; height: 2px; border-radius: 9px; }
-html[data-template="blush-fairytale"] .timeline-card, html[data-template="blush-fairytale"] .gift-card, html[data-template="blush-fairytale"] .testimonial-card { border-radius: 26px; }
-html[data-template="studio-monolith"] .page-about .about-right { order: -1; }
-html[data-template="studio-monolith"] .page-center { padding: 88px 74px; }
-html[data-template="studio-monolith"] .section-header { text-align: left; }
-html[data-template="studio-monolith"] .header-divider { margin-left: 0; width: 96px; }
-html[data-template="studio-monolith"] .breakdown-card, html[data-template="studio-monolith"] .gift-card, html[data-template="studio-monolith"] .testimonial-card { box-shadow: none; border-radius: 0; }
-html[data-template="coastal-azure"] .page-about .about-left { order: 2; }
-html[data-template="coastal-azure"] .page-center { padding: 60px 58px; }
-html[data-template="coastal-azure"] .section-header { text-align: left; }
-html[data-template="coastal-azure"] .header-divider { margin-left: 0; }
-html[data-template="coastal-azure"] .breakdown-card, html[data-template="coastal-azure"] .gift-card { border-top: 4px solid var(--tmpl-primary); }
-html[data-template="industrial-copper"] .page-center { padding: 50px 56px; }
-html[data-template="industrial-copper"] .section-header { text-align: left; border-bottom: 2px solid var(--tmpl-primary); padding-bottom: 22px; }
-html[data-template="industrial-copper"] .header-divider { display:none; }
-html[data-template="industrial-copper"] .timeline-card, html[data-template="industrial-copper"] .breakdown-card, html[data-template="industrial-copper"] .gift-card, html[data-template="industrial-copper"] .faq-card { border-radius: 0; box-shadow: 5px 5px 0 var(--tmpl-badge-bg); }
-html[data-template="french-provence"] .page-center { padding: 60px 70px; }
-html[data-template="french-provence"] .section-title { font-style: italic; }
-html[data-template="french-provence"] .header-divider { width: 72px; height: 3px; border-radius: 50%; }
-html[data-template="french-provence"] .page-about .about-image-wrapper { border: 10px solid var(--tmpl-card-bg); box-shadow: 0 8px 30px var(--tmpl-border); }
-html[data-template="sage-manor"] .page-about .about-left { order: 2; }
-html[data-template="sage-manor"] .page-center { padding: 65px 58px; }
-html[data-template="sage-manor"] .section-header { text-align: left; }
-html[data-template="sage-manor"] .header-divider { margin-left: 0; }
-html[data-template="sage-manor"] .gift-card { text-align: left; border-left: 3px solid var(--tmpl-primary); }
-html[data-template="art-deco-gold"] .page-cover { position:relative; }
-html[data-template="art-deco-gold"] .page-cover .cover-image-container { height:100%; position:absolute; inset:0; }
-html[data-template="art-deco-gold"] .page-cover .cover-image-container::after { content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(24,19,11,.82),transparent 70%); }
-html[data-template="art-deco-gold"] .page-cover .cover-content { position:absolute;bottom:7%;height:auto;color:#fff;z-index:1; }
-html[data-template="art-deco-gold"] .page-cover .cover-brand, html[data-template="art-deco-gold"] .page-cover .cover-quote { color:#fff; }
-html[data-template="art-deco-gold"] .page-center { padding:70px 62px; }
-html[data-template="art-deco-gold"] .section-header { text-align:left; }
-html[data-template="art-deco-gold"] .header-divider { margin-left:0;width:86px; }
-html[data-template="art-deco-gold"] .gift-card, html[data-template="art-deco-gold"] .breakdown-card { border:3px double var(--tmpl-border-accent); }
-html[data-template="sakura-dream"] .page-about .about-right { order:-1; }
-html[data-template="sakura-dream"] .page-center { padding:56px 54px; }
-html[data-template="sakura-dream"] .section-header { margin-bottom:28px; }
-html[data-template="sakura-dream"] .timeline-card, html[data-template="sakura-dream"] .faq-card { border-radius:28px 8px 28px 8px; }
-html[data-template="sakura-dream"] .page-cover .cover-content { border-top:8px solid var(--tmpl-badge-bg); }
-html[data-template="monsoon-ink"] .page-cover { flex-direction:row; }
-html[data-template="monsoon-ink"] .page-cover .cover-image-container { width:57%;height:100%; }
-html[data-template="monsoon-ink"] .page-cover .cover-content { width:43%;height:100%;padding:0 28px; }
-html[data-template="monsoon-ink"] .page-thankyou { flex-direction:row; }
-html[data-template="monsoon-ink"] .page-thankyou .thankyou-image-container { width:54%;height:100%; }
-html[data-template="monsoon-ink"] .page-thankyou .thankyou-content { width:46%;height:100%;padding:34px; }
-html[data-template="monsoon-ink"] .page-center { padding:58px 50px; }
-html[data-template="monsoon-ink"] .section-header { text-align:left; }
-html[data-template="monsoon-ink"] .header-divider { margin-left:0; }
+/* Twenty-six template layouts carry their own composition and card language. */
+html[data-layout="signature"] .page-cover .cover-image-container { height:62%; }
+html[data-layout="signature"] .page-cover .cover-content { height:38%; background:#F8F6F2; }
+html[data-layout="signature"] .page-thankyou .thankyou-image-container { height:52%; }
+html[data-layout="signature"] .page-thankyou .thankyou-content { height:48%; }
+html[data-layout="signature"] .page-center { padding:68px 72px; }
+html[data-layout="signature"] .section-header { margin-bottom:44px; }
+
+html[data-layout="paper"] .page-cover .cover-image-container { width:88%; height:57%; margin:26px auto 0; }
+html[data-layout="paper"] .page-cover .cover-content { height:43%; border-top:1px solid var(--tmpl-border); }
+html[data-layout="paper"] .section-header { margin-bottom:46px; }
+html[data-layout="paper"] .header-divider { width:60px; }
+
+html[data-layout="velvet"] .page-cover { position:relative; background:#17171D; }
+html[data-layout="velvet"] .page-cover .cover-image-container { position:absolute; inset:0; width:100%; height:100%; }
+html[data-layout="velvet"] .page-cover .cover-image-container::after { content:""; position:absolute; inset:0; background:linear-gradient(0deg,rgba(17,15,21,.96),rgba(17,15,21,.04) 75%); pointer-events:none; }
+html[data-layout="velvet"] .page-cover .cover-content { position:absolute; z-index:1; bottom:5%; height:48%; color:#F7F2E9; }
+html[data-layout="velvet"] .page-cover .cover-brand, html[data-layout="velvet"] .page-cover .cover-quote { color:#F7F2E9; }
+html[data-layout="velvet"] .page { border:1px solid var(--tmpl-border-accent); }
+html[data-layout="velvet"] .timeline-card, html[data-layout="velvet"] .gift-card { border-color:var(--tmpl-border-accent); }
+
+html[data-layout="desert"] .page-cover .cover-image-container { width:82%; height:58%; margin:22px auto 0; border-radius:180px 180px 0 0; }
+html[data-layout="desert"] .page-cover .cover-content { height:42%; }
+html[data-layout="desert"] .section-header { text-align:left; padding-left:20px; border-left:3px solid var(--tmpl-primary); }
+html[data-layout="desert"] .header-divider { margin-left:0; }
+html[data-layout="desert"] .gift-card, html[data-layout="desert"] .breakdown-card { border-bottom:4px solid var(--tmpl-primary); }
+
+html[data-layout="quiet"] .page-cover .cover-image-container { width:74%; height:55%; margin:28px auto 0; }
+html[data-layout="quiet"] .page-cover .cover-content { height:45%; }
+html[data-layout="quiet"] .section-header { text-align:left; margin-bottom:54px; }
+html[data-layout="quiet"] .header-divider { display:none; }
+html[data-layout="quiet"] .timeline-card, html[data-layout="quiet"] .breakdown-card, html[data-layout="quiet"] .gift-card, html[data-layout="quiet"] .testimonial-card, html[data-layout="quiet"] .faq-card { border:0; border-bottom:1px solid var(--tmpl-border); border-radius:0; box-shadow:none; }
+
+html[data-layout="gallery"] .page-about .about-right { order:-1; }
+html[data-layout="gallery"] .page-cover .cover-image-container { width:82%; height:54%; margin:34px auto 0; }
+html[data-layout="gallery"] .page-cover .cover-content { height:46%; align-items:flex-start; text-align:left; padding:0 9%; }
+html[data-layout="gallery"] .section-header { text-align:left; }
+html[data-layout="gallery"] .header-divider { margin-left:0; width:96px; }
+html[data-layout="gallery"] .breakdown-card, html[data-layout="gallery"] .gift-card, html[data-layout="gallery"] .testimonial-card { box-shadow:none; border-radius:0; }
+
+html[data-layout="coastal"] .page-cover .cover-image-container { height:54%; border-radius:0 0 42% 0; }
+html[data-layout="coastal"] .page-cover .cover-content { height:46%; }
+html[data-layout="coastal"] .page-about .about-left { order:2; }
+html[data-layout="coastal"] .section-header { text-align:left; }
+html[data-layout="coastal"] .header-divider { margin-left:0; }
+html[data-layout="coastal"] .breakdown-card, html[data-layout="coastal"] .gift-card { border-top:4px solid var(--tmpl-primary); }
+
+html[data-layout="botanical"] .page::after { content:""; position:absolute; inset:22px 0 22px 18px; border-left:1px solid var(--tmpl-border-accent); pointer-events:none; z-index:2; }
+html[data-layout="botanical"] .page-cover .cover-image-container { width:86%; height:57%; margin:24px auto 0; }
+html[data-layout="botanical"] .section-header { text-align:left; }
+html[data-layout="botanical"] .header-divider { margin-left:0; }
+html[data-layout="botanical"] .gift-card, html[data-layout="botanical"] .timeline-card { text-align:left; border-left:3px solid var(--tmpl-primary); }
+
+html[data-layout="terracotta"] .page-cover, html[data-layout="terracotta"] .page-thankyou { flex-direction:row; }
+html[data-layout="terracotta"] .page-cover .cover-image-container { width:56%; height:100%; }
+html[data-layout="terracotta"] .page-cover .cover-content { width:44%; height:100%; padding:24px; }
+html[data-layout="terracotta"] .page-thankyou .thankyou-image-container { width:54%; height:100%; }
+html[data-layout="terracotta"] .page-thankyou .thankyou-content { width:46%; height:100%; padding:28px; }
+html[data-layout="terracotta"] .section-header { text-align:left; }
+html[data-layout="terracotta"] .header-divider { margin-left:0; }
+html[data-layout="terracotta"] .gift-card, html[data-layout="terracotta"] .breakdown-card { border-radius:24px 6px 24px 6px; }
+
+html[data-layout="blue-hour"] .page-cover .cover-image-container { height:58%; }
+html[data-layout="blue-hour"] .page-cover .cover-content { height:42%; background:linear-gradient(180deg,#1A2A3A,var(--tmpl-bg)); }
+html[data-layout="blue-hour"] .page-cover .cover-brand, html[data-layout="blue-hour"] .page-cover .cover-quote { color:#F4F5F4; }
+html[data-layout="blue-hour"] .section-header { text-align:left; }
+html[data-layout="blue-hour"] .header-divider { margin-left:0; }
+html[data-layout="blue-hour"] .timeline-card, html[data-layout="blue-hour"] .faq-card { border-color:var(--tmpl-border-accent); }
+
+html[data-layout="heirloom"] .page::after { content:""; position:absolute; inset:14px; border:3px double var(--tmpl-border-accent); pointer-events:none; z-index:2; }
+html[data-layout="heirloom"] .page-cover .cover-image-container { width:86%; height:54%; margin:26px auto 0; }
+html[data-layout="heirloom"] .page-cover .cover-content { height:46%; }
+html[data-layout="heirloom"] .breakdown-card, html[data-layout="heirloom"] .gift-card { outline:1px solid var(--tmpl-border-accent); outline-offset:4px; }
+
+html[data-layout="sacred-fire"] .page-cover .cover-image-container { height:59%; }
+html[data-layout="sacred-fire"] .section-subtitle { letter-spacing:.22em; }
+html[data-layout="sacred-fire"] .timeline-card, html[data-layout="sacred-fire"] .coverage-card { border-top:3px solid var(--tmpl-primary); }
+html[data-layout="sacred-fire"] .gift-card, html[data-layout="sacred-fire"] .breakdown-card { border:1px solid var(--tmpl-border-accent); box-shadow:0 7px 0 var(--tmpl-badge-bg); }
+
+html[data-layout="garland-garden"] .page-about .about-right { order:-1; }
+html[data-layout="garland-garden"] .page-cover .cover-image-container { width:88%; height:54%; margin:26px auto 0; border-radius:90px 90px 10px 10px; }
+html[data-layout="garland-garden"] .section-header { text-align:left; }
+html[data-layout="garland-garden"] .header-divider { margin-left:0; }
+html[data-layout="garland-garden"] .gift-card { border-left:4px solid var(--tmpl-primary); text-align:left; }
+
+html[data-layout="royal-pavilion"] .page::after { content:""; position:absolute; inset:15px; border:4px double var(--tmpl-border-accent); pointer-events:none; z-index:2; }
+html[data-layout="royal-pavilion"] .page-cover .cover-image-container { height:56%; margin:22px auto 0; width:88%; }
+html[data-layout="royal-pavilion"] .page-cover .cover-content { height:44%; }
+html[data-layout="royal-pavilion"] .timeline-card, html[data-layout="royal-pavilion"] .gift-card, html[data-layout="royal-pavilion"] .breakdown-card { outline:1px solid var(--tmpl-border-accent); outline-offset:4px; }
+
+html[data-layout="saffron-sky"] .page-cover .cover-image-container { width:76%; height:52%; margin:30px auto 0; border-radius:50% 50% 3px 3px; }
+html[data-layout="saffron-sky"] .page-cover .cover-content { height:48%; }
+html[data-layout="saffron-sky"] .section-header { text-align:center; padding-bottom:18px; border-bottom:1px solid var(--tmpl-border-accent); }
+html[data-layout="saffron-sky"] .header-divider { width:70px; }
+
+html[data-layout="vermillion-modern"] .page-cover .cover-image-container { height:57%; }
+html[data-layout="vermillion-modern"] .page-cover .cover-content { height:43%; }
+html[data-layout="vermillion-modern"] .section-header { text-align:left; border-top:4px solid var(--tmpl-primary); padding-top:18px; }
+html[data-layout="vermillion-modern"] .header-divider { display:none; }
+html[data-layout="vermillion-modern"] .timeline-card, html[data-layout="vermillion-modern"] .gift-card { border-radius:0; box-shadow:none; border-bottom:1px solid var(--tmpl-border-accent); }
+
+html[data-layout="ivory-crescent"] .page::after { content:""; position:absolute; inset:18px; border:1px solid var(--tmpl-border-accent); background:radial-gradient(circle at 100% 0%,var(--tmpl-badge-bg) 0 1px,transparent 1.5px); background-size:18px 18px; opacity:.58; pointer-events:none; z-index:2; }
+html[data-layout="ivory-crescent"] .page-cover .cover-image-container { width:84%; height:55%; margin:24px auto 0; }
+html[data-layout="ivory-crescent"] .page-cover .cover-content { height:45%; }
+html[data-layout="ivory-crescent"] .section-header { text-align:center; }
+html[data-layout="ivory-crescent"] .section-subtitle { letter-spacing:.2em; }
+
+html[data-layout="emerald-arch"] .page-about .about-image-wrapper { border-radius:180px 180px 4px 4px; overflow:hidden; }
+html[data-layout="emerald-arch"] .page-cover .cover-image-container { width:76%; height:58%; margin:24px auto 0; border-radius:180px 180px 0 0; }
+html[data-layout="emerald-arch"] .page-cover .cover-content { height:42%; }
+html[data-layout="emerald-arch"] .page { border:1px solid var(--tmpl-border-accent); }
+
+html[data-layout="garden-gathering"] .page-about .about-left { order:2; }
+html[data-layout="garden-gathering"] .page-cover .cover-image-container { width:84%; height:54%; margin:24px auto 0; border-radius:50% 50% 8px 8px; }
+html[data-layout="garden-gathering"] .page-cover .cover-content { height:46%; }
+html[data-layout="garden-gathering"] .gift-card, html[data-layout="garden-gathering"] .testimonial-card { border-radius:28px; }
+
+html[data-layout="moonlit"] .page-cover { position:relative; background:#172536; }
+html[data-layout="moonlit"] .page-cover .cover-image-container { position:absolute; inset:0; width:100%; height:100%; }
+html[data-layout="moonlit"] .page-cover .cover-image-container::after { content:""; position:absolute; inset:0; background:linear-gradient(0deg,rgba(15,29,44,.94),rgba(15,29,44,.12) 82%); pointer-events:none; }
+html[data-layout="moonlit"] .page-cover .cover-content { position:absolute; z-index:1; bottom:6%; height:44%; color:#F4F5F4; }
+html[data-layout="moonlit"] .page-cover .cover-brand, html[data-layout="moonlit"] .page-cover .cover-quote { color:#F4F5F4; }
+html[data-layout="moonlit"] .page-thankyou .thankyou-content { background:#172536; }
+html[data-layout="moonlit"] .page-thankyou .thankyou-title, html[data-layout="moonlit"] .page-thankyou .thankyou-text { color:#F4F5F4; }
+
+html[data-layout="modern-contract"] .page { border:1px solid var(--tmpl-border); }
+html[data-layout="modern-contract"] .page-cover .cover-image-container { height:52%; width:100%; }
+html[data-layout="modern-contract"] .page-cover .cover-content { height:48%; align-items:flex-start; text-align:left; padding:22px 12%; border-left:5px solid var(--tmpl-primary); }
+html[data-layout="modern-contract"] .section-header { text-align:left; padding-bottom:16px; border-bottom:2px solid var(--tmpl-primary); }
+html[data-layout="modern-contract"] .header-divider { display:none; }
+html[data-layout="modern-contract"] .timeline-card, html[data-layout="modern-contract"] .breakdown-card { border-radius:0; box-shadow:none; }
+
+html[data-layout="chapel-vows"] .page-cover .cover-image-container { width:80%; height:58%; margin:24px auto 0; border-radius:180px 180px 0 0; }
+html[data-layout="chapel-vows"] .page-cover .cover-content { height:42%; }
+html[data-layout="chapel-vows"] .page-about .about-image-wrapper { border:9px solid var(--tmpl-card-bg); box-shadow:0 0 0 1px var(--tmpl-border-accent); }
+html[data-layout="chapel-vows"] .section-header { text-align:center; }
+html[data-layout="chapel-vows"] .header-divider { width:68px; }
+
+html[data-layout="garden-blessing"] .page-about .about-left { order:2; }
+html[data-layout="garden-blessing"] .page-cover .cover-image-container { width:86%; height:56%; margin:22px auto 0; }
+html[data-layout="garden-blessing"] .page-cover .cover-content { height:44%; }
+html[data-layout="garden-blessing"] .gift-card, html[data-layout="garden-blessing"] .timeline-card { border-left:3px solid var(--tmpl-primary); }
+
+html[data-layout="stained-glass"] .page-cover .cover-image-container { width:88%; height:56%; margin:20px auto 0; }
+html[data-layout="stained-glass"] .page-cover .cover-content { height:44%; }
+html[data-layout="stained-glass"] .section-header { border-top:6px solid var(--tmpl-primary); padding-top:17px; }
+html[data-layout="stained-glass"] .section-subtitle { display:inline-block; padding:5px 12px; background:linear-gradient(90deg,var(--tmpl-badge-bg),var(--tmpl-card-bg)); }
+html[data-layout="stained-glass"] .timeline-card, html[data-layout="stained-glass"] .gift-card { border-radius:0 16px 0 16px; }
+
+html[data-layout="coastal-ceremony"] .page-cover, html[data-layout="coastal-ceremony"] .page-thankyou { flex-direction:row; }
+html[data-layout="coastal-ceremony"] .page-cover .cover-image-container { width:56%; height:100%; }
+html[data-layout="coastal-ceremony"] .page-cover .cover-content { width:44%; height:100%; padding:24px; }
+html[data-layout="coastal-ceremony"] .page-thankyou .thankyou-image-container { width:52%; height:100%; }
+html[data-layout="coastal-ceremony"] .page-thankyou .thankyou-content { width:48%; height:100%; padding:24px; }
+html[data-layout="coastal-ceremony"] .section-header { text-align:left; }
+html[data-layout="coastal-ceremony"] .header-divider { margin-left:0; }
+
+html[data-layout="modern-chapel"] .page-cover .cover-image-container { width:72%; height:50%; margin:32px auto 0; }
+html[data-layout="modern-chapel"] .page-cover .cover-content { height:50%; }
+html[data-layout="modern-chapel"] .section-header { text-align:left; margin-bottom:58px; }
+html[data-layout="modern-chapel"] .header-divider { display:none; }
+html[data-layout="modern-chapel"] .timeline-card, html[data-layout="modern-chapel"] .gift-card, html[data-layout="modern-chapel"] .breakdown-card { border:0; border-bottom:1px solid var(--tmpl-border); border-radius:0; box-shadow:none; }
 
 .tmpl-chip:hover {
   border-color: var(--tmpl-primary);
@@ -333,13 +415,6 @@ html[data-template="monsoon-ink"] .header-divider { margin-left:0; }
   border-color: var(--tmpl-primary);
   color: #FFF;
   box-shadow: 0 0 0 2px rgba(173, 138, 86, 0.25);
-}
-
-.tmpl-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  flex-shrink: 0;
 }
 
 /* ==========================================================================
@@ -372,8 +447,21 @@ html[data-template="monsoon-ink"] .header-divider { margin-left:0; }
 .sidebar-content { flex:none; overflow:visible; padding:12px; gap:12px; }
 .sidebar-content[style*="display: none"] { display:flex !important; }
 .app-sidebar .template-strip { display:block; overflow:visible; padding:0; background:transparent; border:0; }
-.template-chip-grid { display:grid !important; grid-template-columns:repeat(2,minmax(0,1fr)); gap:6px !important; }
-.template-chip-grid .tmpl-chip { min-width:0; width:100%; justify-content:flex-start; border-radius:8px; padding:8px; font-size:10px; white-space:normal; }
+.template-picker-heading { display:flex; justify-content:space-between; align-items:center; gap:8px; }
+.template-picker-heading > span:last-child { color:var(--ui-text-muted); font-size:10px; font-weight:500; white-space:nowrap; }
+.template-category-tabs { display:flex; flex-wrap:wrap; gap:5px; margin:0 0 9px; }
+.template-category-tab { min-height:30px; padding:5px 8px; border:1px solid var(--ui-border); border-radius:999px; background:#20252B; color:var(--ui-text-muted); font:600 10px/1.15 'Inter',sans-serif; cursor:pointer; }
+.template-category-tab:hover,.template-category-tab.active { color:#fff; border-color:var(--tmpl-primary); background:color-mix(in srgb,var(--tmpl-primary) 23%,#20252B); }
+.template-category-tab:focus-visible,.tmpl-chip:focus-visible { outline:2px solid var(--tmpl-accent); outline-offset:2px; }
+.template-chip-grid { display:grid !important; grid-template-columns:minmax(0,1fr); gap:6px !important; max-height:340px; overflow:auto; padding:2px 4px 2px 0; scrollbar-width:thin; }
+.template-chip-grid .tmpl-chip { min-width:0; width:100%; justify-content:flex-start; align-items:center; border-radius:8px; padding:8px 10px; font-size:11px; white-space:normal; text-align:left; }
+.tmpl-preview { position:relative; display:block; width:38px; height:46px; flex:0 0 38px; overflow:hidden; border-radius:5px; background:var(--ui-card); }
+.tmpl-preview img { width:100%; height:100%; display:block; object-fit:cover; }
+.tmpl-preview::after { content:""; position:absolute; inset:auto 0 0; height:4px; background:var(--template-swatch); }
+.tmpl-chip-copy { display:flex; flex:1; min-width:0; flex-direction:column; gap:3px; }
+.tmpl-chip-copy strong { overflow:hidden; color:inherit; font-size:11px; font-weight:650; line-height:1.3; text-overflow:ellipsis; white-space:nowrap; }
+.tmpl-chip-copy small { color:var(--ui-text-muted); font-size:9px; font-weight:450; line-height:1.2; }
+.tmpl-chip.active .tmpl-chip-copy small { color:#D4D9DF; }
 .tool-wide { width:100%; min-height:40px; justify-content:center; }
 .selected-element-tools { padding:10px; border:1px solid var(--ui-border); border-radius:8px; background:#1D2228; }
 .selected-element-tools[hidden] { display:none !important; }
@@ -1434,12 +1522,24 @@ html[data-template="monsoon-ink"] .header-divider { margin-left:0; }
   .text-placement-banner { position:sticky; top:0; z-index:10; }
   .free-text-field { min-width:95px; }
   .free-text-field { min-width:0; }
-  html[data-template="monsoon-ink"] .page-cover, html[data-template="monsoon-ink"] .page-thankyou { flex-direction:column; }
-  html[data-template="monsoon-ink"] .page-cover .cover-image-container, html[data-template="monsoon-ink"] .page-thankyou .thankyou-image-container { width:100%; height:38svh; }
-  html[data-template="monsoon-ink"] .page-cover .cover-content, html[data-template="monsoon-ink"] .page-thankyou .thankyou-content { width:100%; height:auto; padding:26px 20px; }
-  html[data-template="art-deco-gold"] .page-cover { min-height:70svh; }
-  html[data-template="art-deco-gold"] .page-cover .cover-image-container { height:100%; min-height:70svh; }
-  html[data-template="art-deco-gold"] .page-cover .cover-content { bottom:0; min-height:0; padding:28px 20px; }
+  html[data-layout="terracotta"] .page-cover, html[data-layout="terracotta"] .page-thankyou,
+  html[data-layout="coastal-ceremony"] .page-cover, html[data-layout="coastal-ceremony"] .page-thankyou { flex-direction:column; }
+  html[data-layout="terracotta"] .page-cover .cover-image-container, html[data-layout="terracotta"] .page-thankyou .thankyou-image-container,
+  html[data-layout="coastal-ceremony"] .page-cover .cover-image-container, html[data-layout="coastal-ceremony"] .page-thankyou .thankyou-image-container { width:100%; height:40svh; min-height:240px; }
+  html[data-layout="terracotta"] .page-cover .cover-content, html[data-layout="terracotta"] .page-thankyou .thankyou-content,
+  html[data-layout="coastal-ceremony"] .page-cover .cover-content, html[data-layout="coastal-ceremony"] .page-thankyou .thankyou-content { width:100%; height:auto; min-height:34svh; padding:28px 20px; }
+  html[data-layout="velvet"] .page-cover .cover-content, html[data-layout="moonlit"] .page-cover .cover-content { bottom:0; min-height:0; padding:28px 20px; }
+  html[data-layout="signature"] .page-cover .cover-image-container { height:44svh; }
+  html[data-layout="signature"] .page-cover .cover-content { height:auto; min-height:35svh; padding:28px 20px; }
+  html[data-layout="paper"] .page-cover .cover-image-container, html[data-layout="desert"] .page-cover .cover-image-container,
+  html[data-layout="quiet"] .page-cover .cover-image-container, html[data-layout="gallery"] .page-cover .cover-image-container,
+  html[data-layout="botanical"] .page-cover .cover-image-container, html[data-layout="heirloom"] .page-cover .cover-image-container,
+  html[data-layout="sacred-fire"] .page-cover .cover-image-container, html[data-layout="garland-garden"] .page-cover .cover-image-container,
+  html[data-layout="royal-pavilion"] .page-cover .cover-image-container, html[data-layout="saffron-sky"] .page-cover .cover-image-container,
+  html[data-layout="ivory-crescent"] .page-cover .cover-image-container, html[data-layout="emerald-arch"] .page-cover .cover-image-container,
+  html[data-layout="garden-gathering"] .page-cover .cover-image-container, html[data-layout="chapel-vows"] .page-cover .cover-image-container,
+  html[data-layout="garden-blessing"] .page-cover .cover-image-container, html[data-layout="stained-glass"] .page-cover .cover-image-container,
+  html[data-layout="modern-chapel"] .page-cover .cover-image-container { width:100%; height:42svh; min-height:240px; margin:0; border-radius:8px 8px 0 0; }
 }
 
 @media print {
